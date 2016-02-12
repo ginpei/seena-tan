@@ -9,7 +9,7 @@ class LaundryManager
 
   rx_start: /^(.+)$/
   rx_queue: /^(.+)(?:\?|？)$/
-  rx_stop: /^(.+)(?:やめ)$/
+  rx_stop: /^(.+)(?:やめ|やめる|やめた)$/
 
   current_user: null
   tm_finish: null
@@ -53,7 +53,11 @@ class LaundryManager
         return
 
       if @current_user
-        res.reply "#{@current_user}にお知らせするのやめるよ。"
+        if @current_user is res.message.user.name
+          message = "お知らせするのやめるよ。"
+        else
+          message = "#{@current_user}にお知らせするのやめるよ。"
+        res.reply message
         @update_current(null)
       else
         res.reply '誰も使ってないと思うよ。'
