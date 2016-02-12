@@ -1,6 +1,7 @@
 # Description:
 #   洗濯が終わったら連絡します。
 
+require('moment-timezone')
 moment = require('moment')
 
 module.exports = (robot) ->
@@ -10,7 +11,7 @@ module.exports = (robot) ->
   robot.hear rxLaundry, (res) ->
     user = res.message.user.name
     duration = { hours: 1, minutes: 11 }
-    finishesAt = moment().add(duration)
+    finishesAt = moment().tz('America/Vancouver').add(duration)
     time = finishesAt.format('h:mm')
 
     message = "あいあいー。#{time}になったらお知らせします。"
@@ -24,7 +25,7 @@ module.exports = (robot) ->
   robot.hear rxDriyer, (res) ->
     user = res.message.user.name
     duration = { hours: 1, minutes: 11 }
-    finishesAt = moment().add(duration)
+    finishesAt = moment().tz('America/Vancouver').add(duration)
     time = finishesAt.format('h:mm')
 
     message = "あいあいー。#{time}になったらお知らせします。"
