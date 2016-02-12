@@ -25,6 +25,15 @@
     "node": "5.2.x"
   },
   "scripts": {
-    "start": "bin/hubot --name seena-tan"
+    "start": "bin/hubot --name seena-tan",
+    "test": "node_modules/.bin/mocha --compilers coffee:coffee-script/register"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "co": "^4.6.0",
+    "coffee-script": "^1.10.0",
+    "hubot-test-helper": "^1.4.4",
+    "mocha": "^2.4.5",
+    "sinon": "^1.17.3"
   }
 }
