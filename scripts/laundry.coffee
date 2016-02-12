@@ -43,22 +43,13 @@ class LaundryManager
     time = @finishes_at.format('h:mm')
     "あいあいー。#{time}になったらお知らせします。"
 
+class DrierManager extends LaundryManager
+  rx_start: /^乾燥$/
+  rx_queue: /^乾燥(?:\?|？)$/
+
 module.exports = (robot) ->
   laundry_manager = new LaundryManager()
   laundry_manager.hear(robot)
 
-  rx_driyer = /^乾燥$/
-
-  robot.hear rx_driyer, (res) ->
-    user = res.message.user.name
-    duration = { hours: 1, minutes: 11 }
-    finishes_at = moment().tz('America/Vancouver').add(duration)
-    time = finishes_at.format('h:mm')
-
-    message = "あいあいー。#{time}になったらお知らせします。"
-    res.reply message
-
-    setTimeout ->
-      message = 'そろそろ終わったんじゃないかな？'
-      res.reply message
-    , moment.duration(duration)
+  drier_manager = new DrierManager()
+  drier_manager.hear(robot)
