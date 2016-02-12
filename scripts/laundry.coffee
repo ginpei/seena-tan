@@ -27,11 +27,15 @@ class LaundryManager
         return
 
       last = @update_current(res)
+
       @start_timer =>
         message = 'そろそろ終わったんじゃないかな？'
         res.reply message
         @update_current(null)
       res.reply @make_start_message()
+
+      if last.user
+        res.send "（#{last.user}は終わったのかな？）"
 
     robot.hear @rx_queue, (res)=>
       unless @is_my_target(res)
@@ -58,6 +62,14 @@ class LaundryManager
     (res.match[1] is @machine_name)
 
   update_current: (res)->
+    last =
+      duration: @duration
+      finishes_at: @finishes_at
+      user: @current_user
+
+    clearTimeout(@tm_finish)
+    @tm_finish = null
+
     if res
       @duration = @defaults.duration
       @finishes_at = moment().tz('America/Vancouver').add(@duration)
@@ -66,8 +78,8 @@ class LaundryManager
       @duration = null
       @finishes_at = null
       @current_user = null
-      clearTimeout(@tm_finish)
-      @tm_finish = null
+
+    last
 
   start_timer: (callback)->
     @tm_finish = setTimeout(callback, moment.duration(@duration))
