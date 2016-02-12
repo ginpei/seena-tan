@@ -74,6 +74,33 @@ describe 'LaundryManager', ->
           ['hubot', '@alice aliceが使ってるよ。1時間後の1:11に終わるよ。']
         ]
 
+    context '文言パターンの確認', ->
+      patterns = [
+        '洗濯?'
+        '洗濯？'
+        '洗濯機使ってる？'
+        'だれか洗濯機だれかつかってる？'
+      ]
+
+      beforeEach ->
+        co ->
+          yield room.user.say 'alice', patterns[0]
+          yield room.user.say 'alice', patterns[1]
+          yield room.user.say 'alice', patterns[2]
+          yield room.user.say 'alice', patterns[3]
+
+      it '誰もいないと返信', ->
+        expect(room.messages).to.eql [
+          ['alice', patterns[0]]
+          ['hubot', '@alice 誰も使ってないと思うよ。']
+          ['alice', patterns[1]]
+          ['hubot', '@alice 誰も使ってないと思うよ。']
+          ['alice', patterns[2]]
+          ['hubot', '@alice 誰も使ってないと思うよ。']
+          ['alice', patterns[3]]
+          ['hubot', '@alice 誰も使ってないと思うよ。']
+        ]
+
   context 'キャンセル', ->
     context '誰も利用中でない場合', ->
       beforeEach ->

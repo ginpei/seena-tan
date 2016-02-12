@@ -7,9 +7,9 @@ moment = require('moment')
 class LaundryManager
   machine_name: null
 
-  rx_start: /^(.+)$/
-  rx_queue: /^(.+)(?:\?|？)$/
-  rx_stop: /^(.+)(?:やめ|やめる|やめた)$/
+  rx_start: null
+  rx_queue: null
+  rx_stop: null
 
   current_user: null
   tm_finish: null
@@ -20,6 +20,10 @@ class LaundryManager
 
   constructor: (options={})->
     @machine_name = options.machine_name
+
+    @rx_start = new RegExp("^(#{@machine_name})(?:開始|始め|はじめ)?$")
+    @rx_queue = new RegExp("^(?:誰か|だれか)?(#{@machine_name})(?:機)?(?:誰か|だれか)?(?:使ってる|つかってる)?(?:\\?|？)$")
+    @rx_stop = new RegExp("^(#{@machine_name})(?:やめ|やめる|やめた|キャンセル)$")
 
   hear: (robot)->
     robot.hear @rx_start, (res)=>
