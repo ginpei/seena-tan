@@ -5,14 +5,14 @@ require('moment-timezone')
 moment = require('moment')
 
 module.exports = (robot) ->
-  rxLaundry = /^洗濯$/
-  rxDriyer = /^乾燥$/
+  rx_laundry = /^洗濯$/
+  rx_driyer = /^乾燥$/
 
-  robot.hear rxLaundry, (res) ->
+  robot.hear rx_laundry, (res) ->
     user = res.message.user.name
     duration = { hours: 1, minutes: 11 }
-    finishesAt = moment().tz('America/Vancouver').add(duration)
-    time = finishesAt.format('h:mm')
+    finishes_at = moment().tz('America/Vancouver').add(duration)
+    time = finishes_at.format('h:mm')
 
     message = "あいあいー。#{time}になったらお知らせします。"
     res.reply message
@@ -22,11 +22,11 @@ module.exports = (robot) ->
       res.reply message
     , moment.duration(duration)
 
-  robot.hear rxDriyer, (res) ->
+  robot.hear rx_driyer, (res) ->
     user = res.message.user.name
     duration = { hours: 1, minutes: 11 }
-    finishesAt = moment().tz('America/Vancouver').add(duration)
-    time = finishesAt.format('h:mm')
+    finishes_at = moment().tz('America/Vancouver').add(duration)
+    time = finishes_at.format('h:mm')
 
     message = "あいあいー。#{time}になったらお知らせします。"
     res.reply message
