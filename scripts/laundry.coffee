@@ -43,7 +43,7 @@ class LaundryManager
 
       if @current_user
         time = @finishes_at.format('h:mm')
-        duration = @finishes_at.locale('ja').fromNow()
+        duration = @finishes_at.locale('ja').from(@now())
         res.reply "#{@current_user}が使ってるよ。#{duration}の#{time}に終わるよ。"
       else
         res.reply '誰も使ってないと思うよ。'
@@ -76,7 +76,7 @@ class LaundryManager
 
     if res
       @duration = @defaults.duration
-      @finishes_at = moment().tz('America/Vancouver').add(@duration)
+      @finishes_at = @now().tz('America/Vancouver').add(@duration)
       @current_user = res.message.user.name
     else
       @duration = null
@@ -84,6 +84,9 @@ class LaundryManager
       @current_user = null
 
     last
+
+  now: ()->
+    moment()
 
   start_timer: (callback)->
     @tm_finish = setTimeout(callback, moment.duration(@duration))
@@ -98,3 +101,5 @@ module.exports = (robot) ->
 
   drier_manager = new LaundryManager(machine_name:'乾燥')
   drier_manager.hear(robot)
+
+module.exports.LaundryManager = LaundryManager
