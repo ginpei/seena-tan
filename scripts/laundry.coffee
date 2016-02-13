@@ -22,7 +22,7 @@ class LaundryManager
     @machine_name = options.machine_name
 
     @rx_start = new RegExp("^(#{@machine_name})(?:開始|始め|はじめ)?$")
-    @rx_queue = new RegExp("^(?:誰か|だれか)?(#{@machine_name})(?:機)?(?:誰か|だれか)?(?:使ってる|つかってる)?(?:\\?|？)$")
+    @rx_queue = new RegExp("^(?:誰か|だれか)?(#{@machine_name})(?:機)?(?:誰か|だれか)?(?:(?:使って|つかって)(?:る|ます|ますか))?(?:\\?|？|(?:使|つか)ってますか)$")
     @rx_stop = new RegExp("^(#{@machine_name})(?:やめ|やめる|やめた|キャンセル)$")
 
   hear: (robot)->

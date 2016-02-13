@@ -78,8 +78,10 @@ describe 'LaundryManager', ->
       patterns = [
         '洗濯?'
         '洗濯？'
-        '洗濯機使ってる？'
-        'だれか洗濯機だれかつかってる？'
+        '誰か洗濯機誰か使ってる？'
+        'だれか洗濯だれかつかってる？'
+        '洗濯機つかってる？'
+        '洗濯機使ってますか'
       ]
 
       beforeEach ->
@@ -88,8 +90,10 @@ describe 'LaundryManager', ->
           yield room.user.say 'alice', patterns[1]
           yield room.user.say 'alice', patterns[2]
           yield room.user.say 'alice', patterns[3]
+          yield room.user.say 'alice', patterns[4]
+          yield room.user.say 'alice', patterns[5]
 
-      it '誰もいないと返信', ->
+      it 'ちゃんと拾う', ->
         expect(room.messages).to.eql [
           ['alice', patterns[0]]
           ['hubot', '@alice 誰も使ってないと思うよ。']
@@ -98,6 +102,10 @@ describe 'LaundryManager', ->
           ['alice', patterns[2]]
           ['hubot', '@alice 誰も使ってないと思うよ。']
           ['alice', patterns[3]]
+          ['hubot', '@alice 誰も使ってないと思うよ。']
+          ['alice', patterns[4]]
+          ['hubot', '@alice 誰も使ってないと思うよ。']
+          ['alice', patterns[5]]
           ['hubot', '@alice 誰も使ってないと思うよ。']
         ]
 
