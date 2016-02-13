@@ -4,7 +4,7 @@ PATH = './../scripts/laundry.coffee'
 Helper = require('hubot-test-helper')
 co = require('co')
 expect = require('chai').expect
-moment = require('moment')
+moment = require('moment-timezone')
 sinon = require('sinon')
 
 LaundryManager = require(PATH).LaundryManager
@@ -14,7 +14,7 @@ describe 'LaundryManager', ->
   helper = new Helper(PATH)
 
   beforeEach ->
-    sinon.stub LaundryManager.prototype, 'now', ()-> moment('2000-01-01T12:00:00')
+    sinon.stub LaundryManager.prototype, 'now', ()-> moment.tz('2000-01-01T12:00:00', 'America/Vancouver').locale('ja')
     room = helper.createRoom()
 
   afterEach ->
@@ -165,3 +165,15 @@ describe 'LaundryManager', ->
           ['alice', '洗濯?']
           ['hubot', '@alice 誰も使ってないと思うよ。']
         ]
+
+  context '無関係な発言', ->
+    beforeEach ->
+      co ->
+        yield room.user.say 'alice', '洗濯。'
+        yield room.user.say 'alice', 'あ、洗濯'
+
+    it '無視する', ->
+      expect(room.messages).to.eql [
+        ['alice', '洗濯。']
+        ['alice', 'あ、洗濯']
+      ]

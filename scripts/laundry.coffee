@@ -1,8 +1,7 @@
 # Description:
 #   洗濯が終わったら連絡します。
 
-require('moment-timezone')
-moment = require('moment')
+moment = require('moment-timezone')
 
 class LaundryManager
   machine_name: null
@@ -27,9 +26,6 @@ class LaundryManager
 
   hear: (robot)->
     robot.hear @rx_start, (res)=>
-      unless @is_my_target(res)
-        return
-
       last = @update_current(res)
 
       @start_timer =>
@@ -42,20 +38,14 @@ class LaundryManager
         res.send "（#{last.user}は終わったのかな？）"
 
     robot.hear @rx_queue, (res)=>
-      unless @is_my_target(res)
-        return
-
       if @current_user
         time = @finishes_at.format('h:mm')
-        duration = @finishes_at.locale('ja').from(@now())
+        duration = @finishes_at.from(@now())
         res.reply "#{@current_user}が使ってるよ。#{duration}の#{time}に終わるよ。"
       else
         res.reply '誰も使ってないと思うよ。'
 
     robot.hear @rx_stop, (res)=>
-      unless @is_my_target(res)
-        return
-
       if @current_user
         if @current_user is res.message.user.name
           message = "お知らせするのやめるよ。"
@@ -65,9 +55,6 @@ class LaundryManager
         @update_current(null)
       else
         res.reply '誰も使ってないと思うよ。'
-
-  is_my_target: (res)->
-    (res.match[1] is @machine_name)
 
   update_current: (res)->
     last =
@@ -80,7 +67,7 @@ class LaundryManager
 
     if res
       @duration = @defaults.duration
-      @finishes_at = @now().tz('America/Vancouver').add(@duration)
+      @finishes_at = @now().add(@duration)
       @current_user = res.message.user.name
     else
       @duration = null
@@ -90,7 +77,7 @@ class LaundryManager
     last
 
   now: ()->
-    moment()
+    moment.tz('America/Vancouver').locale('ja')
 
   start_timer: (callback)->
     @tm_finish = setTimeout(callback, moment.duration(@duration))
