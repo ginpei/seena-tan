@@ -26,9 +26,6 @@ class LaundryManager
 
   hear: (robot)->
     robot.hear @rx_start, (res)=>
-      unless @is_my_target(res)
-        return
-
       last = @update_current(res)
 
       @start_timer =>
@@ -41,9 +38,6 @@ class LaundryManager
         res.send "（#{last.user}は終わったのかな？）"
 
     robot.hear @rx_queue, (res)=>
-      unless @is_my_target(res)
-        return
-
       if @current_user
         time = @finishes_at.format('h:mm')
         duration = @finishes_at.from(@now())
@@ -52,9 +46,6 @@ class LaundryManager
         res.reply '誰も使ってないと思うよ。'
 
     robot.hear @rx_stop, (res)=>
-      unless @is_my_target(res)
-        return
-
       if @current_user
         if @current_user is res.message.user.name
           message = "お知らせするのやめるよ。"
@@ -64,9 +55,6 @@ class LaundryManager
         @update_current(null)
       else
         res.reply '誰も使ってないと思うよ。'
-
-  is_my_target: (res)->
-    (res.match[1] is @machine_name)
 
   update_current: (res)->
     last =

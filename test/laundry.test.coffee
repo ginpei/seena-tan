@@ -165,3 +165,15 @@ describe 'LaundryManager', ->
           ['alice', '洗濯?']
           ['hubot', '@alice 誰も使ってないと思うよ。']
         ]
+
+  context '無関係な発言', ->
+    beforeEach ->
+      co ->
+        yield room.user.say 'alice', '洗濯。'
+        yield room.user.say 'alice', 'あ、洗濯'
+
+    it '無視する', ->
+      expect(room.messages).to.eql [
+        ['alice', '洗濯。']
+        ['alice', 'あ、洗濯']
+      ]
