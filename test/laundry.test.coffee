@@ -4,8 +4,7 @@ PATH = './../scripts/laundry.coffee'
 Helper = require('hubot-test-helper')
 co = require('co')
 expect = require('chai').expect
-require('moment-timezone')
-moment = require('moment')
+moment = require('moment-timezone')
 sinon = require('sinon')
 
 LaundryManager = require(PATH).LaundryManager

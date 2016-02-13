@@ -1,8 +1,7 @@
 # Description:
 #   洗濯が終わったら連絡します。
 
-require('moment-timezone')
-moment = require('moment')
+moment = require('moment-timezone')
 
 class LaundryManager
   machine_name: null
