@@ -4,6 +4,7 @@ PATH = './../scripts/laundry.coffee'
 Helper = require('hubot-test-helper')
 co = require('co')
 expect = require('chai').expect
+require('moment-timezone')
 moment = require('moment')
 sinon = require('sinon')
 
@@ -14,7 +15,7 @@ describe 'LaundryManager', ->
   helper = new Helper(PATH)
 
   beforeEach ->
-    sinon.stub LaundryManager.prototype, 'now', ()-> moment('2000-01-01T12:00:00')
+    sinon.stub LaundryManager.prototype, 'now', ()-> moment.tz('2000-01-01T12:00:00', 'America/Vancouver').locale('ja')
     room = helper.createRoom()
 
   afterEach ->
