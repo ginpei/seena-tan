@@ -29,7 +29,7 @@ class LaundryManager
       last = @update_current(res)
 
       @start_timer =>
-        message = 'そろそろ終わったんじゃないかな？'
+        message = "そろそろ#{@machine_name}が終わったんじゃないかな？"
         res.reply message
         @update_current(null)
       res.reply @make_start_message()
