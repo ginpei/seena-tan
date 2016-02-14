@@ -1,5 +1,5 @@
 # https://amussey.github.io/2015/08/11/testing-hubot-scripts.html
-PATH = './../scripts/laundry.coffee'
+PATH = './../scripts/timer.coffee'
 
 Helper = require('hubot-test-helper')
 co = require('co')
@@ -7,19 +7,19 @@ expect = require('chai').expect
 moment = require('moment-timezone')
 sinon = require('sinon')
 
-LaundryManager = require(PATH).LaundryManager
+Timer = require(PATH).Timer
 
-describe 'LaundryManager', ->
+describe 'Timer', ->
   room = null
   helper = new Helper(PATH)
 
   beforeEach ->
-    sinon.stub LaundryManager.prototype, 'now', ()-> moment.tz('2000-01-01T12:00:00', 'America/Vancouver').locale('ja')
+    sinon.stub Timer.prototype, 'now', ()-> moment.tz('2000-01-01T12:00:00', 'America/Vancouver').locale('ja')
     room = helper.createRoom()
 
   afterEach ->
     room.destroy()
-    LaundryManager.prototype.now.restore()
+    Timer.prototype.now.restore()
 
   context '開始', ->
     context '誰も利用中でない場合', ->

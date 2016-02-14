@@ -3,7 +3,7 @@
 
 moment = require('moment-timezone')
 
-class LaundryManager
+class Timer
   machine_name: null
 
   rx_start: null
@@ -87,10 +87,10 @@ class LaundryManager
     "あいあいー。#{time}になったらお知らせします。"
 
 module.exports = (robot) ->
-  laundry_manager = new LaundryManager(machine_name:'洗濯')
+  laundry_manager = new Timer(machine_name:'洗濯')
   laundry_manager.hear(robot)
 
-  drier_manager = new LaundryManager(machine_name:'乾燥')
+  drier_manager = new Timer(machine_name:'乾燥')
   drier_manager.hear(robot)
 
-module.exports.LaundryManager = LaundryManager
+module.exports.Timer = Timer
