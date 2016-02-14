@@ -45,7 +45,7 @@ describe 'LaundryManager', ->
           ['hubot', '@alice あいあいー。1:11になったらお知らせします。']
           ['alice', '洗濯']
           ['hubot', '@alice あいあいー。1:11になったらお知らせします。']
-          ['hubot', '（aliceは終わったのかな？）']
+          ['hubot', '（@aliceの洗濯は終わったのかな？）']
         ]
 
     context '文言パターンの確認', ->
@@ -66,7 +66,7 @@ describe 'LaundryManager', ->
         for pattern, i in patterns
           result.push ['alice', pattern]
           result.push ['hubot', '@alice あいあいー。1:11になったらお知らせします。']
-          result.push ['hubot', '（aliceは終わったのかな？）'] unless i is 0
+          result.push ['hubot', '（@aliceの洗濯は終わったのかな？）'] unless i is 0
         expect(room.messages).to.eql result
 
   context '確認', ->

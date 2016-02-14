@@ -35,7 +35,7 @@ class LaundryManager
       res.reply @make_start_message()
 
       if last.user
-        res.send "（#{last.user}は終わったのかな？）"
+        res.send "（@#{last.user}の#{@machine_name}は終わったのかな？）"
 
     robot.hear @rx_queue, (res)=>
       if @current_user
