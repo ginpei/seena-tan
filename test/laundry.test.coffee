@@ -86,28 +86,14 @@ describe 'LaundryManager', ->
 
       beforeEach ->
         co ->
-          yield room.user.say 'alice', patterns[0]
-          yield room.user.say 'alice', patterns[1]
-          yield room.user.say 'alice', patterns[2]
-          yield room.user.say 'alice', patterns[3]
-          yield room.user.say 'alice', patterns[4]
-          yield room.user.say 'alice', patterns[5]
+          yield room.user.say 'alice', pattern for pattern in patterns
 
       it 'ちゃんと拾う', ->
-        expect(room.messages).to.eql [
-          ['alice', patterns[0]]
-          ['hubot', '@alice 誰も使ってないと思うよ。']
-          ['alice', patterns[1]]
-          ['hubot', '@alice 誰も使ってないと思うよ。']
-          ['alice', patterns[2]]
-          ['hubot', '@alice 誰も使ってないと思うよ。']
-          ['alice', patterns[3]]
-          ['hubot', '@alice 誰も使ってないと思うよ。']
-          ['alice', patterns[4]]
-          ['hubot', '@alice 誰も使ってないと思うよ。']
-          ['alice', patterns[5]]
-          ['hubot', '@alice 誰も使ってないと思うよ。']
-        ]
+        result = []
+        for pattern in patterns
+          result.push ['alice', pattern]
+          result.push ['hubot', '@alice 誰も使ってないと思うよ。']
+        expect(room.messages).to.eql result
 
   context 'キャンセル', ->
     context '誰も利用中でない場合', ->
