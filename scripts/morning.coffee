@@ -11,7 +11,7 @@ class Morning
     )
 
 module.exports = (robot) ->
-  morning = new Morning()
-  morning.start(robot)
+  # morning = new Morning()
+  # morning.start(robot)
 
 module.exports.Morning = Morning
