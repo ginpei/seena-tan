@@ -24,7 +24,7 @@
     "node": "5.2.x"
   },
   "scripts": {
-    "start": "bin/hubot --name seena-tan",
+    "start": "HUBOT_HEROKU_KEEPALIVE_URL=none bin/hubot --name seena-tan",
     "test": "node_modules/.bin/mocha --compilers coffee:coffee-script/register"
   },
   "devDependencies": {
