@@ -19,7 +19,7 @@ class Timer
 
   constructor: (options={})->
     @title = options.title
-    @duration = options.duration
+    @default_duration = options.duration
 
     @rx_start = new RegExp("^(?:(\\d+)分間)?(?:#{@title})(?:開始|(?:始|はじ)め(?:た|ました)?|する|します)?$")
     @rx_queue = new RegExp("^(?:誰か|だれか)?(?:#{@title})(?:機)?(?:誰か|だれか)?(?:(?:使って|つかって)(?:る|ます|ますか))?(?:\\?|？|(?:使|つか)ってますか)$")
@@ -82,7 +82,7 @@ class Timer
     if specified_minutes
       { minutes:specified_minutes }
     else
-      @duration or @defaults.duration
+      @default_duration or @defaults.duration
 
   now: ()->
     moment.tz('America/Vancouver').locale('ja')
