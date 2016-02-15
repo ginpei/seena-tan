@@ -5,6 +5,7 @@
   "author": "ginpei <ginpei@gmail.com>",
   "description": "Super Great House Keeper",
   "dependencies": {
+    "cron": "^1.1.0",
     "hubot": "^2.18.0",
     "hubot-diagnostics": "0.0.1",
     "hubot-google-images": "^0.2.6",
