@@ -20,7 +20,7 @@ class Timer
   constructor: (options={})->
     @machine_name = options.machine_name
 
-    @rx_start = new RegExp("^(?:(\\d+)分間)?(?:#{@machine_name})(?:開始|(?:始|はじ)め(?:た|ました)?)?$")
+    @rx_start = new RegExp("^(?:(\\d+)分間)?(?:#{@machine_name})(?:開始|(?:始|はじ)め(?:た|ました)?|する|します)?$")
     @rx_queue = new RegExp("^(?:誰か|だれか)?(?:#{@machine_name})(?:機)?(?:誰か|だれか)?(?:(?:使って|つかって)(?:る|ます|ますか))?(?:\\?|？|(?:使|つか)ってますか)$")
     @rx_stop = new RegExp("^(?:#{@machine_name})(?:やめ|やめる|やめた|キャンセル)$")
 
