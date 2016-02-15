@@ -48,6 +48,17 @@ describe 'Timer', ->
           ['hubot', '（@aliceの洗濯は終わったのかな？）']
         ]
 
+    context '終了時刻の指定', ->
+      beforeEach ->
+        co ->
+          yield room.user.say 'alice', '10分間洗濯'
+
+      it '時刻を反映して設定', ->
+        expect(room.messages).to.eql [
+          ['alice', '10分間洗濯']
+          ['hubot', '@alice あいあいー。12:10になったらお知らせします。']
+        ]
+
     context '文言パターンの確認', ->
       patterns = [
         '洗濯'

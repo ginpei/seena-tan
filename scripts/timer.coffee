@@ -20,7 +20,7 @@ class Timer
   constructor: (options={})->
     @machine_name = options.machine_name
 
-    @rx_start = new RegExp("^(?:#{@machine_name})(?:開始|(?:始|はじ)め(?:た|ました)?)?$")
+    @rx_start = new RegExp("^(?:(\\d+)分間)?(?:#{@machine_name})(?:開始|(?:始|はじ)め(?:た|ました)?)?$")
     @rx_queue = new RegExp("^(?:誰か|だれか)?(?:#{@machine_name})(?:機)?(?:誰か|だれか)?(?:(?:使って|つかって)(?:る|ます|ますか))?(?:\\?|？|(?:使|つか)ってますか)$")
     @rx_stop = new RegExp("^(?:#{@machine_name})(?:やめ|やめる|やめた|キャンセル)$")
 
@@ -66,7 +66,7 @@ class Timer
     @tm_finish = null
 
     if res
-      @duration = @defaults.duration
+      @duration = @getDuration(res)
       @finishes_at = @now().add(@duration)
       @current_user = res.message.user.name
     else
@@ -75,6 +75,13 @@ class Timer
       @current_user = null
 
     last
+
+  getDuration: (res)->
+    specified_minutes = res.match[1]
+    if specified_minutes
+      { minutes:specified_minutes }
+    else
+      @defaults.duration
 
   now: ()->
     moment.tz('America/Vancouver').locale('ja')
