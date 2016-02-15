@@ -1,5 +1,5 @@
 # https://amussey.github.io/2015/08/11/testing-hubot-scripts.html
-PATH = './../scripts/laundry.coffee'
+PATH = './../scripts/timer.coffee'
 
 Helper = require('hubot-test-helper')
 co = require('co')
@@ -7,30 +7,33 @@ expect = require('chai').expect
 moment = require('moment-timezone')
 sinon = require('sinon')
 
-LaundryManager = require(PATH).LaundryManager
+Timer = require(PATH).Timer
 
-describe 'LaundryManager', ->
+describe 'Timer', ->
   room = null
   helper = new Helper(PATH)
 
   beforeEach ->
-    sinon.stub LaundryManager.prototype, 'now', ()-> moment.tz('2000-01-01T12:00:00', 'America/Vancouver').locale('ja')
+    sinon.stub Timer.prototype, 'now', ()-> moment.tz('2000-01-01T12:00:00', 'America/Vancouver').locale('ja')
     room = helper.createRoom()
 
   afterEach ->
     room.destroy()
-    LaundryManager.prototype.now.restore()
+    Timer.prototype.now.restore()
 
   context '開始', ->
     context '誰も利用中でない場合', ->
       beforeEach ->
         co ->
           yield room.user.say 'alice', '洗濯'
+          yield room.user.say 'alice', '炊飯'
 
       it 'お知らせ時刻を返信', ->
         expect(room.messages).to.eql [
           ['alice', '洗濯']
           ['hubot', '@alice あいあいー。1:11になったらお知らせします。']
+          ['alice', '炊飯']
+          ['hubot', '@alice あいあいー。1:00になったらお知らせします。']
         ]
 
     context '誰か利用中である場合', ->
@@ -45,8 +48,40 @@ describe 'LaundryManager', ->
           ['hubot', '@alice あいあいー。1:11になったらお知らせします。']
           ['alice', '洗濯']
           ['hubot', '@alice あいあいー。1:11になったらお知らせします。']
-          ['hubot', '（aliceは終わったのかな？）']
+          ['hubot', '（@aliceの洗濯は終わったのかな？）']
         ]
+
+    context '終了時刻の指定', ->
+      beforeEach ->
+        co ->
+          yield room.user.say 'alice', '10分間洗濯'
+
+      it '時刻を反映して設定', ->
+        expect(room.messages).to.eql [
+          ['alice', '10分間洗濯']
+          ['hubot', '@alice あいあいー。12:10になったらお知らせします。']
+        ]
+
+    context '文言パターンの確認', ->
+      patterns = [
+        '洗濯'
+        '洗濯開始'
+        '洗濯はじめ'
+        '洗濯はじめた'
+        '洗濯始めました'
+      ]
+
+      beforeEach ->
+        co ->
+          yield room.user.say 'alice', pattern for pattern in patterns
+
+      it 'ちゃんと拾う', ->
+        result = []
+        for pattern, i in patterns
+          result.push ['alice', pattern]
+          result.push ['hubot', '@alice あいあいー。1:11になったらお知らせします。']
+          result.push ['hubot', '（@aliceの洗濯は終わったのかな？）'] unless i is 0
+        expect(room.messages).to.eql result
 
   context '確認', ->
     context '誰も利用中でない場合', ->
@@ -82,32 +117,19 @@ describe 'LaundryManager', ->
         'だれか洗濯だれかつかってる？'
         '洗濯機つかってる？'
         '洗濯機使ってますか'
+        'だれか炊飯してる？'
       ]
 
       beforeEach ->
         co ->
-          yield room.user.say 'alice', patterns[0]
-          yield room.user.say 'alice', patterns[1]
-          yield room.user.say 'alice', patterns[2]
-          yield room.user.say 'alice', patterns[3]
-          yield room.user.say 'alice', patterns[4]
-          yield room.user.say 'alice', patterns[5]
+          yield room.user.say 'alice', pattern for pattern in patterns
 
       it 'ちゃんと拾う', ->
-        expect(room.messages).to.eql [
-          ['alice', patterns[0]]
-          ['hubot', '@alice 誰も使ってないと思うよ。']
-          ['alice', patterns[1]]
-          ['hubot', '@alice 誰も使ってないと思うよ。']
-          ['alice', patterns[2]]
-          ['hubot', '@alice 誰も使ってないと思うよ。']
-          ['alice', patterns[3]]
-          ['hubot', '@alice 誰も使ってないと思うよ。']
-          ['alice', patterns[4]]
-          ['hubot', '@alice 誰も使ってないと思うよ。']
-          ['alice', patterns[5]]
-          ['hubot', '@alice 誰も使ってないと思うよ。']
-        ]
+        result = []
+        for pattern in patterns
+          result.push ['alice', pattern]
+          result.push ['hubot', '@alice 誰も使ってないと思うよ。']
+        expect(room.messages).to.eql result
 
   context 'キャンセル', ->
     context '誰も利用中でない場合', ->

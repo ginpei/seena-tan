@@ -3,8 +3,8 @@
 
 moment = require('moment-timezone')
 
-class LaundryManager
-  machine_name: null
+class Timer
+  title: null
 
   rx_start: null
   rx_queue: null
@@ -18,24 +18,25 @@ class LaundryManager
     duration: { hours: 1, minutes: 11 }
 
   constructor: (options={})->
-    @machine_name = options.machine_name
+    @title = options.title
+    @default_duration = options.duration
 
-    @rx_start = new RegExp("^(#{@machine_name})(?:開始|始め|はじめ)?$")
-    @rx_queue = new RegExp("^(?:誰か|だれか)?(#{@machine_name})(?:機)?(?:誰か|だれか)?(?:(?:使って|つかって)(?:る|ます|ますか))?(?:\\?|？|(?:使|つか)ってますか)$")
-    @rx_stop = new RegExp("^(#{@machine_name})(?:やめ|やめる|やめた|キャンセル)$")
+    @rx_start = new RegExp("^(?:(\\d+)分間)?(?:#{@title})(?:開始|(?:始|はじ)め(?:た|ました)?|する|します)?$")
+    @rx_queue = new RegExp("^(?:誰か|だれか)?(?:#{@title})(?:機|器)?(?:誰か|だれか)?(?:(?:使って|つかって|して)(?:る|ます|ますか))?(?:\\?|？|(?:使|つか)ってますか)$")
+    @rx_stop = new RegExp("^(?:#{@title})(?:やめ|やめる|やめた|キャンセル)$")
 
   hear: (robot)->
     robot.hear @rx_start, (res)=>
       last = @update_current(res)
 
       @start_timer =>
-        message = 'そろそろ終わったんじゃないかな？'
+        message = "そろそろ#{@title}が終わったんじゃないかな？"
         res.reply message
         @update_current(null)
       res.reply @make_start_message()
 
       if last.user
-        res.send "（#{last.user}は終わったのかな？）"
+        res.send "（@#{last.user}の#{@title}は終わったのかな？）"
 
     robot.hear @rx_queue, (res)=>
       if @current_user
@@ -66,7 +67,7 @@ class LaundryManager
     @tm_finish = null
 
     if res
-      @duration = @defaults.duration
+      @duration = @getDuration(res)
       @finishes_at = @now().add(@duration)
       @current_user = res.message.user.name
     else
@@ -75,6 +76,13 @@ class LaundryManager
       @current_user = null
 
     last
+
+  getDuration: (res)->
+    specified_minutes = res.match[1]
+    if specified_minutes
+      { minutes:specified_minutes }
+    else
+      @default_duration or @defaults.duration
 
   now: ()->
     moment.tz('America/Vancouver').locale('ja')
@@ -87,10 +95,13 @@ class LaundryManager
     "あいあいー。#{time}になったらお知らせします。"
 
 module.exports = (robot) ->
-  laundry_manager = new LaundryManager(machine_name:'洗濯')
+  laundry_manager = new Timer(title:'洗濯')
   laundry_manager.hear(robot)
 
-  drier_manager = new LaundryManager(machine_name:'乾燥')
+  drier_manager = new Timer(title:'乾燥')
   drier_manager.hear(robot)
 
-module.exports.LaundryManager = LaundryManager
+  drier_manager = new Timer(title:'炊飯', duration:{minutes:60})
+  drier_manager.hear(robot)
+
+module.exports.Timer = Timer
