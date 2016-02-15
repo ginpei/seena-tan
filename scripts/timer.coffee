@@ -18,9 +18,9 @@ class Timer
     @title = options.title
     @default_duration = options.duration
 
-    @rx_start = new RegExp("(?:(?:(\\d+)分間?)?(?:#{@title})(?:開始|(?:始|はじ)め(?:た|ました)?|する|します)?)$")
-    @rx_queue = new RegExp("(?:(?:誰か|だれか)?(?:#{@title})(?:機|器)?(?:誰か|だれか)?(?:(?:使って|つかって|して)(?:る|ます|ますか))?(?:\\?|？|(?:使|つか)ってますか))$")
-    @rx_stop = new RegExp("(?:(?:#{@title})(?:やめ|やめる|やめた|キャンセル))$")
+    @rx_start = new RegExp("(?:(\\d+)分間?)?(?:#{@title})(?:開始|(?:始|はじ)め(?:た|ました)?|する|します)?$")
+    @rx_queue = new RegExp("(?:誰か|だれか)?(?:#{@title})(?:機|器)?(?:誰か|だれか)?(?:(?:使って|つかって|して)(?:る|ます|ますか))?(?:\\?|？|(?:使|つか)ってますか)$")
+    @rx_stop = new RegExp("(?:#{@title})(?:やめ|やめる|やめた|キャンセル)$")
 
   start: (robot)->
     robot.respond @rx_start, (res)=>
