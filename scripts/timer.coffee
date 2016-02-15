@@ -21,12 +21,12 @@ class Timer
     @title = options.title
     @default_duration = options.duration
 
-    @rx_start = new RegExp("^(?:(\\d+)分間)?(?:#{@title})(?:開始|(?:始|はじ)め(?:た|ました)?|する|します)?$")
-    @rx_queue = new RegExp("^(?:誰か|だれか)?(?:#{@title})(?:機|器)?(?:誰か|だれか)?(?:(?:使って|つかって|して)(?:る|ます|ますか))?(?:\\?|？|(?:使|つか)ってますか)$")
-    @rx_stop = new RegExp("^(?:#{@title})(?:やめ|やめる|やめた|キャンセル)$")
+    @rx_start = new RegExp("(?:(?:(\\d+)分間)?(?:#{@title})(?:開始|(?:始|はじ)め(?:た|ました)?|する|します)?)$")
+    @rx_queue = new RegExp("(?:(?:誰か|だれか)?(?:#{@title})(?:機|器)?(?:誰か|だれか)?(?:(?:使って|つかって|して)(?:る|ます|ますか))?(?:\\?|？|(?:使|つか)ってますか))$")
+    @rx_stop = new RegExp("(?:(?:#{@title})(?:やめ|やめる|やめた|キャンセル))$")
 
-  hear: (robot)->
-    robot.hear @rx_start, (res)=>
+  start: (robot)->
+    robot.respond @rx_start, (res)=>
       last = @update_current(res)
 
       @start_timer =>
@@ -38,7 +38,7 @@ class Timer
       if last.user
         res.send "（@#{last.user}の#{@title}は終わったのかな？）"
 
-    robot.hear @rx_queue, (res)=>
+    robot.respond @rx_queue, (res)=>
       if @current_user
         time = @finishes_at.format('h:mm')
         duration = @finishes_at.from(@now())
@@ -46,7 +46,7 @@ class Timer
       else
         res.reply '誰も使ってないと思うよ。'
 
-    robot.hear @rx_stop, (res)=>
+    robot.respond @rx_stop, (res)=>
       if @current_user
         if @current_user is res.message.user.name
           message = "お知らせするのやめるよ。"
@@ -96,12 +96,12 @@ class Timer
 
 module.exports = (robot) ->
   laundry_manager = new Timer(title:'洗濯')
-  laundry_manager.hear(robot)
+  laundry_manager.start(robot)
 
   drier_manager = new Timer(title:'乾燥')
-  drier_manager.hear(robot)
+  drier_manager.start(robot)
 
   drier_manager = new Timer(title:'炊飯', duration:{minutes:60})
-  drier_manager.hear(robot)
+  drier_manager.start(robot)
 
 module.exports.Timer = Timer
