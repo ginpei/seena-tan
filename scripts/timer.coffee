@@ -14,9 +14,6 @@ class Timer
   tm_finish: null
   finishes_at: null
 
-  defaults:
-    duration: { hours: 1, minutes: 11 }
-
   constructor: (options={})->
     @title = options.title
     @default_duration = options.duration
@@ -82,7 +79,7 @@ class Timer
     if specified_minutes
       { minutes:specified_minutes }
     else
-      @default_duration or @defaults.duration
+      @default_duration
 
   now: ()->
     moment.tz('America/Vancouver').locale('ja')
@@ -95,13 +92,22 @@ class Timer
     "あいあいー。#{time}になったらお知らせします。"
 
 module.exports = (robot) ->
-  laundry_manager = new Timer(title:'洗濯')
+  laundry_manager = new Timer(
+    duration: { hours: 1, minutes: 11 }
+    title: '洗濯'
+  )
   laundry_manager.start(robot)
 
-  drier_manager = new Timer(title:'乾燥')
+  drier_manager = new Timer(
+    duration: { hours: 1, minutes: 11 }
+    title: '乾燥'
+  )
   drier_manager.start(robot)
 
-  drier_manager = new Timer(title:'炊飯', duration:{minutes:60})
+  drier_manager = new Timer(
+    title: '炊飯'
+    duration: { minutes:60 }
+  )
   drier_manager.start(robot)
 
 module.exports.Timer = Timer
