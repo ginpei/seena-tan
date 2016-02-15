@@ -19,6 +19,7 @@ class Timer
 
   constructor: (options={})->
     @machine_name = options.machine_name
+    @duration = options.duration
 
     @rx_start = new RegExp("^(?:(\\d+)分間)?(?:#{@machine_name})(?:開始|(?:始|はじ)め(?:た|ました)?|する|します)?$")
     @rx_queue = new RegExp("^(?:誰か|だれか)?(?:#{@machine_name})(?:機)?(?:誰か|だれか)?(?:(?:使って|つかって)(?:る|ます|ますか))?(?:\\?|？|(?:使|つか)ってますか)$")
@@ -81,7 +82,7 @@ class Timer
     if specified_minutes
       { minutes:specified_minutes }
     else
-      @defaults.duration
+      @duration or @defaults.duration
 
   now: ()->
     moment.tz('America/Vancouver').locale('ja')
@@ -98,6 +99,9 @@ module.exports = (robot) ->
   laundry_manager.hear(robot)
 
   drier_manager = new Timer(machine_name:'乾燥')
+  drier_manager.hear(robot)
+
+  drier_manager = new Timer(machine_name:'炊飯', duration:{minutes:60})
   drier_manager.hear(robot)
 
 module.exports.Timer = Timer
