@@ -55,11 +55,14 @@ describe 'Timer', ->
       beforeEach ->
         co ->
           yield room.user.say 'alice', '@hubot 10分間洗濯'
+          yield room.user.say 'alice', '@hubot 12分乾燥'
 
       it '時刻を反映して設定', ->
         expect(room.messages).to.eql [
           ['alice', '@hubot 10分間洗濯']
           ['hubot', '@alice あいあいー。12:10になったらお知らせします。']
+          ['alice', '@hubot 12分乾燥']
+          ['hubot', '@alice あいあいー。12:12になったらお知らせします。']
         ]
 
     context '文言パターンの確認', ->
