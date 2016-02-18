@@ -62,7 +62,7 @@ describe 'Forecast', ->
       it '返信する', (done)->
         waitForMessagesToBe done, [
           ['alice', '@hubot 天気']
-          ['hubot', 'ん。']
+          ['hubot', 'んー今日の天気はねー']
           ['hubot', "@alice #{reply_text}"]
         ]
 
@@ -81,7 +81,7 @@ describe 'Forecast', ->
         expected = []
         for pattern, i in patterns
           expected.push ['alice', pattern]
-          expected.push ['hubot', 'ん。']
+          expected.push ['hubot', 'んー今日の天気はねー']
         for i in patterns
           expected.push ['hubot', "@alice #{reply_text}"]
         waitForMessagesToBe done, expected
@@ -107,7 +107,7 @@ describe 'Forecast', ->
       it '返信する', (done)->
         waitForMessagesToBe done, [
           ['alice', '@hubot 今週の天気']
-          ['hubot', 'ん。']
+          ['hubot', 'んー今週の天気はねー']
           ['hubot', "@alice #{reply_text}"]
         ]
 
@@ -125,7 +125,7 @@ describe 'Forecast', ->
         expected = []
         for pattern, i in patterns
           expected.push ['alice', pattern]
-          expected.push ['hubot', 'ん。']
+          expected.push ['hubot', 'んー今週の天気はねー']
         for i in patterns
           expected.push ['hubot', "@alice #{reply_text}"]
         waitForMessagesToBe done, expected

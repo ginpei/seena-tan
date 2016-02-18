@@ -18,7 +18,7 @@ class ForecastBot
 
   start: (robot)->
     robot.respond /(?:今日の)?天気/, (res)=>
-      res.send 'ん。'
+      res.send 'んー今日の天気はねー'
       @get_forecast res, (data)=>
         hourly_data = data.hourly.data.filter((d,i)=>i<@hourly_limit)
         lines = @make_lines(hourly_data, 'hh:mm')
@@ -26,7 +26,7 @@ class ForecastBot
         res.reply message
 
     robot.respond /(?:今週|一週間)の天気/, (res)=>
-      res.send 'ん。'
+      res.send 'んー今週の天気はねー'
       @get_forecast res, (data)=>
         daily_data = data.daily.data.filter((d,i)=>i<@daily_limit)
         lines = @make_lines(daily_data, 'M/DD')
