@@ -85,3 +85,47 @@ describe 'Forecast', ->
         for i in patterns
           expected.push ['hubot', "@alice #{reply_text}"]
         waitForMessagesToBe done, expected
+
+  context '今週の天気', ->
+    reply_text =
+      """
+      こんな感じだよー。
+      2/17 ☂  6.8～ 9.9℃ 83% Rain throughout the day.
+      2/18 ☂  5.7～ 8.9℃ 80% Light rain throughout the day.
+      2/19 ☂  4.9～ 9.4℃ 74% Rain throughout the day.
+      2/20 ☂  2.6～ 8.4℃ 56% Drizzle in the morning.
+      2/21 ☂ -3.7～ 5.4℃ 68% Rain in the morning and afternoon.
+      2/22 ☃ -0.6～ 5.3℃ 66% Light snow (under 1 cm.) in the morning.
+      2/23 ☃ -1.3～ 7.2℃ 21% Mixed precipitation in the morning and overnight.
+      """
+
+    context '尋ねる', ->
+      beforeEach ->
+        co ->
+          yield room.user.say 'alice', '@hubot 今週の天気'
+
+      it '返信する', (done)->
+        waitForMessagesToBe done, [
+          ['alice', '@hubot 今週の天気']
+          ['hubot', 'ん。']
+          ['hubot', "@alice #{reply_text}"]
+        ]
+
+    context '文言パターンの確認', ->
+      patterns = [
+        '@hubot 今週の天気'
+        '@hubot 一週間の天気'
+      ]
+
+      beforeEach ->
+        co ->
+          yield room.user.say 'alice', pattern for pattern in patterns
+
+      it 'ちゃんと拾う', (done)->
+        expected = []
+        for pattern, i in patterns
+          expected.push ['alice', pattern]
+          expected.push ['hubot', 'ん。']
+        for i in patterns
+          expected.push ['hubot', "@alice #{reply_text}"]
+        waitForMessagesToBe done, expected
