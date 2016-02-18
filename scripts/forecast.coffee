@@ -1,5 +1,8 @@
 # Description:
 #   天気予報
+# Commands:
+#   hubot 今日の天気を教えて - 16時間分の天気予報
+#   hubot 今週の天気を教えて - 7日間分の天気予報
 
 Forecast = require('forecast.io')
 moment = require('moment-timezone')
