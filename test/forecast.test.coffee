@@ -32,6 +32,35 @@ describe 'Forecast', ->
     room.destroy()
     Forecast.get.restore()
 
+  context 'ざっくりとした天気', ->
+    reply_text =
+      """
+      こんな感じだよー。
+      Rain throughout the day.
+      04:00 ☂  9.3℃ 43% Drizzle
+      07:00 ☂  9.3℃ 70% Light Rain
+      10:00 ☂  8.4℃ 77% Rain
+      01:00 ☂  7.4℃ 80% Rain
+      04:00 ☂  6.6℃ 71% Light Rain
+      07:00 ☂  6.3℃ 35% Drizzle
+      Light rain throughout the week, with temperatures falling to 5°C on Monday.
+      2/18 ☂  5.7～ 8.9℃ 80% Light rain throughout the day.
+      2/19 ☂  4.9～ 9.4℃ 74% Rain throughout the day.
+      2/20 ☂  2.6～ 8.4℃ 56% Drizzle in the morning.
+      """
+
+    context '尋ねる', ->
+      beforeEach ->
+        co ->
+          yield room.user.say 'alice', '@hubot 天気'
+
+      it '返信する', (done)->
+        waitForMessagesToBe done, [
+          ['alice', '@hubot 天気']
+          ['hubot', 'んー天気はねー']
+          ['hubot', "@alice #{reply_text}"]
+        ]
+
   context '今日の天気', ->
     reply_text =
       """
@@ -57,20 +86,19 @@ describe 'Forecast', ->
     context '尋ねる', ->
       beforeEach ->
         co ->
-          yield room.user.say 'alice', '@hubot 天気'
+          yield room.user.say 'alice', '@hubot 今日の天気'
 
       it '返信する', (done)->
         waitForMessagesToBe done, [
-          ['alice', '@hubot 天気']
+          ['alice', '@hubot 今日の天気']
           ['hubot', 'んー今日の天気はねー']
           ['hubot', "@alice #{reply_text}"]
         ]
 
     context '文言パターンの確認', ->
       patterns = [
-        '@hubot 天気'
         '@hubot 今日の天気'
-        '@hubot 今日の天気を教えて'
+        '@hubot 今日の天気予報を教えて'
       ]
 
       beforeEach ->

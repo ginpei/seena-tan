@@ -17,7 +17,13 @@ class ForecastBot
     @timezone = process.env.HUBOT_FORECAST_TZ
 
   start: (robot)->
-    robot.respond /(?:今日の)?天気/, (res)=>
+    robot.respond /天気/, (res)=>
+      res.send 'んー天気はねー'
+      @get_morning_forecast res, (forecast)->
+        message = "こんな感じだよー。\n#{forecast}"
+        res.reply message
+
+    robot.respond /今日の天気/, (res)=>
       res.send 'んー今日の天気はねー'
       @get_forecast res, (data)=>
         hourly_data = data.hourly.data.filter((d,i)=>i<@hourly_limit)
@@ -33,6 +39,21 @@ class ForecastBot
         message = 'こんな感じだよー。\n' + lines.join('\n')
         res.reply message
 
+  get_morning_forecast: (res, callback)->
+    @get_forecast res, (data)=>
+      return callback(null) unless data
+      hourly = data.hourly.data.filter((d,i)=>i<18 and i%3 is 0)
+      daily = data.daily.data.filter((d,i)=>i isnt 0 and i<4)
+
+      message =
+        """
+        #{data.hourly.summary}
+        #{@make_lines(hourly, 'hh:mm').join('\n')}
+        #{data.daily.summary}
+        #{@make_lines(daily, 'M/DD').join('\n')}
+        """
+      callback(message)
+
   get_forecast: (res, callback)->
     Forecast.get
       APIKey: @api_key
@@ -43,7 +64,10 @@ class ForecastBot
         callback(data)
       onerror: (err)->
         console.error err
-        res.reply 'ごめん、えらった！'
+        if res
+          res.reply 'ごめん、えらった！'
+        else
+          callback(null)
 
   make_lines: (data, time_format)->
     message = data.map (d)=>
