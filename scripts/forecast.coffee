@@ -18,35 +18,31 @@ class ForecastBot
   start: (robot)->
     robot.respond /(?:今日の)?天気/, (res)=>
       res.send 'ん。'
-      Forecast.get
-        APIKey: process.env.HUBOT_FORECAST_API_KEY
-        latitude: @latitude
-        longitude: @longitude
-        units: 'si'
-        onsuccess: (data)=>
-          hourly_data = data.hourly.data.filter((d,i)=>i<@hourly_limit)
-          lines = @make_lines(hourly_data, 'hh:mm')
-          message = 'こんな感じだよー。\n' + lines.join('\n')
-          res.reply message
-        onerror: (err)->
-          console.error err
-          res.reply 'ごめん、えらった！'
+      @get_forecast res, (data)=>
+        hourly_data = data.hourly.data.filter((d,i)=>i<@hourly_limit)
+        lines = @make_lines(hourly_data, 'hh:mm')
+        message = 'こんな感じだよー。\n' + lines.join('\n')
+        res.reply message
 
     robot.respond /(?:今週|一週間)の天気/, (res)=>
       res.send 'ん。'
-      Forecast.get
-        APIKey: process.env.HUBOT_FORECAST_API_KEY
-        latitude: @latitude
-        longitude: @longitude
-        units: 'si'
-        onsuccess: (data)=>
-          daily_data = data.daily.data.filter((d,i)=>i<@daily_limit)
-          lines = @make_lines(daily_data, 'M/DD')
-          message = 'こんな感じだよー。\n' + lines.join('\n')
-          res.reply message
-        onerror: (err)->
-          console.error err
-          res.reply 'ごめん、えらった！'
+      @get_forecast res, (data)=>
+        daily_data = data.daily.data.filter((d,i)=>i<@daily_limit)
+        lines = @make_lines(daily_data, 'M/DD')
+        message = 'こんな感じだよー。\n' + lines.join('\n')
+        res.reply message
+
+  get_forecast: (res, callback)->
+    Forecast.get
+      APIKey: process.env.HUBOT_FORECAST_API_KEY
+      latitude: @latitude
+      longitude: @longitude
+      units: 'si'
+      onsuccess: (data)=>
+        callback(data)
+      onerror: (err)->
+        console.error err
+        res.reply 'ごめん、えらった！'
 
   make_lines: (data, time_format)->
     message = data.map (d)=>
