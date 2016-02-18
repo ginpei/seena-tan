@@ -11,6 +11,7 @@ class ForecastBot
   constructor: ->
     @hourly_limit = 16
     @daily_limit = 7
+    @api_key = process.env.HUBOT_FORECAST_API_KEY
     @latitude = process.env.HUBOT_FORECAST_LAT
     @longitude = process.env.HUBOT_FORECAST_LONG
     @timezone = process.env.HUBOT_FORECAST_TZ
@@ -34,7 +35,7 @@ class ForecastBot
 
   get_forecast: (res, callback)->
     Forecast.get
-      APIKey: process.env.HUBOT_FORECAST_API_KEY
+      APIKey: @api_key
       latitude: @latitude
       longitude: @longitude
       units: 'si'
