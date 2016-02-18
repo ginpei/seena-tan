@@ -83,4 +83,6 @@ module.exports = (robot) ->
   morning = new Morning()
   morning.start(robot)
 
+  robot.messageRoom 'seena_tan', '(´ぅω・`) おはよ'
+
 module.exports.Morning = Morning
