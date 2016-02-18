@@ -15,7 +15,6 @@ class ForecastBot
     @longitude = process.env.HUBOT_FORECAST_LONG
     @timezone = process.env.HUBOT_FORECAST_TZ
 
-
   start: (robot)->
     robot.respond /(?:今日の)?天気/, (res)=>
       res.send 'ん。'
