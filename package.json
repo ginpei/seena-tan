@@ -6,6 +6,7 @@
   "description": "Super Great House Keeper",
   "dependencies": {
     "cron": "^1.1.0",
+    "forecast.io": "github:ginpei/forecast.io#instantGet",
     "hubot": "^2.18.0",
     "hubot-diagnostics": "0.0.1",
     "hubot-google-images": "^0.2.6",
@@ -25,8 +26,8 @@
     "node": "5.2.x"
   },
   "scripts": {
-    "start": "HUBOT_HEROKU_KEEPALIVE_URL=none bin/hubot --name seena-tan",
-    "test": "node_modules/.bin/mocha --compilers coffee:coffee-script/register"
+    "start": "source bin/env; bin/hubot",
+    "test": "source bin/env; node_modules/.bin/mocha --compilers coffee:coffee-script/register"
   },
   "devDependencies": {
     "chai": "^3.5.0",
