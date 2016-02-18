@@ -26,6 +26,7 @@
     "node": "5.2.x"
   },
   "scripts": {
+    "logs": "heroku logs -a seena-tan",
     "start": "source bin/env; bin/hubot",
     "test": "source bin/env; node_modules/.bin/mocha --compilers coffee:coffee-script/register"
   },
