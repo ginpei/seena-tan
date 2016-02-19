@@ -4,6 +4,7 @@
 CronJob = require('cron').CronJob
 moment = require('moment-timezone')
 ForecastBot = require('./../scripts/forecast.coffee').ForecastBot
+Traffic = require('./../scripts/traffic.coffee').Traffic
 
 class Morning
   constructor: (options)->
@@ -27,6 +28,9 @@ class Morning
       message = @build_message(forecast)
       robot.messageRoom @channel, message
 
+      @get_traffic (message)=>
+        robot.messageRoom @channel, message
+
   build_message: (forecast)->
     if forecast
       message =
@@ -36,6 +40,9 @@ class Morning
         """
     else
       message = 'おはよう～！　今日は天気予報が用意できなかったよ、ごめんね。'
+
+  get_traffic: (callback)->
+    Traffic.get_morning_message callback
 
 module.exports = (robot) ->
   morning = new Morning()

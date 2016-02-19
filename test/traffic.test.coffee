@@ -89,3 +89,35 @@ describe 'Traffic', ->
           ['hubot', 'んーどうかな']
           ['hubot', "@alice #{reply_text}"]
         ]
+
+  context '毎朝報告用', ->
+    context '普通に動いてるとき', ->
+      traffic = null
+      sent_text = null
+
+      beforeEach (done)->
+        operating_wo_errors = true
+        Traffic.get_morning_message (message)->
+          sent_text = message
+          done()
+
+      it '文言を返す', ->
+        expect(sent_text).to.eql '電車とバスは平常運転みたいです。'
+
+    context '乱れているとき', ->
+      sent_text = null
+
+      beforeEach (done)->
+        operating_wo_errors = false
+        Traffic.get_morning_message (message)->
+          sent_text = message
+          done()
+
+      it '文言を返す', ->
+        message =
+          """
+          電車が止まったりしてるみたい。
+          ✔ Bus
+          ✘ SkyTrain : [Something wrong.] Spider man is running on the rails.
+          """
+        expect(sent_text).to.eql message

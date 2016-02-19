@@ -20,6 +20,10 @@ class Traffic
         else
           res.reply @make_message(alerts)
 
+    robot.respond /--debug-traffic/, (res)=>
+      Traffic.get_morning_message (message)=>
+        res.reply message
+
   translink_alerts: (callback)->
     translink_alerts (err, alerts)->
       if alerts
@@ -45,6 +49,31 @@ class Traffic
       "✔ #{data.title}"
     else
       "✘ #{data.title} : [#{data.status}] #{data.detail}"
+
+  get_morning_message: (callback)->
+    @translink_alerts (err, alerts)=>
+      if err
+        callback('交通情報はよくわかりませんでした。')
+        return
+
+      callback(@make_morning_message(alerts))
+
+  make_morning_message: (alerts)->
+    [bus, train] = alerts
+    if bus.fine and train.fine
+      message = '電車とバスは平常運転みたいです。'
+    else
+      message =
+        """
+        電車が止まったりしてるみたい。
+        #{@format_alert(bus)}
+        #{@format_alert(train)}
+        """
+
+  # Instant interface
+  @get_morning_message: (callback)->
+    traffic = new Traffic()
+    traffic.get_morning_message(callback)
 
 module.exports = (robot)->
   traffic = new Traffic()
