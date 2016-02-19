@@ -3,6 +3,7 @@
 
 CronJob = require('cron').CronJob
 moment = require('moment-timezone')
+_ = require('lodash')
 ForecastBot = require('./../scripts/forecast.coffee').ForecastBot
 
 class Morning
@@ -37,10 +38,24 @@ class Morning
     else
       message = 'おはよう～！　今日は天気予報が用意できなかったよ、ごめんね。'
 
+  @first_channel: 'seena_tan'
+
+  @say_good_morning: (robot)->
+    candidates = [
+      '(´ぅω・`)'
+      '(:3[＿＿]'
+      '_:(´ཀ`」 ∠):_'
+      '(-ω-)Zzz...　Σ(ﾟωﾟ)!'
+      '( ³ω³ )｡oO'
+      ':(∩ˇωˇ∩):'
+    ]
+    message = _.sample(candidates)
+    robot.messageRoom Morning.first_channel, message
+
 module.exports = (robot) ->
   morning = new Morning()
   morning.start(robot)
 
-  robot.messageRoom 'seena_tan', '(´ぅω・`) おはよ'
+  Morning.say_good_morning(robot)
 
 module.exports.Morning = Morning
