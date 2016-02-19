@@ -9,7 +9,7 @@
 
 translinkAlerts = require('translink-alerts')
 
-class Trafic
+class Traffic
   start: (robot)->
     robot.hear /(?:traffic|電車|バス|交通)/, (res)=>
       res.send 'えっとねー'
@@ -37,5 +37,5 @@ class Trafic
           "✘ #{data.title} : [#{data.status}] #{data.detail}"
 
 module.exports = (robot)->
-  trafic = new Trafic()
-  trafic.start(robot)
+  traffic = new Traffic()
+  traffic.start(robot)
