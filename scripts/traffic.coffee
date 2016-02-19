@@ -21,11 +21,14 @@ class Traffic
           res.reply @make_message(alerts)
 
   translink_alerts: (callback)->
-    translink_alerts callback
+    translink_alerts (err, alerts)->
+      if alerts
+        bus = _.findWhere(alerts, title:'Bus')
+        train = _.findWhere(alerts, title:'SkyTrain')
+      callback(err, [bus, train])
 
   make_message: (alerts)->
-    bus = _.findWhere(alerts, title:'Bus')
-    train = _.findWhere(alerts, title:'SkyTrain')
+    [bus, train] = alerts
     if bus.fine and train.fine
       message = '大丈夫そうだよー。'
     else
