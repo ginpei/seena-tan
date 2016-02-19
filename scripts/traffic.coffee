@@ -12,7 +12,7 @@ _ = require('underscore')
 
 class Traffic
   start: (robot)->
-    robot.hear /(?:traffic|電車|バス|交通)/, (res)=>
+    robot.respond /(?:traffic|電車|バス|交通)/, (res)=>
       res.send 'んーどうかな'
       @translink_alerts (err, alerts)=>
         if err
