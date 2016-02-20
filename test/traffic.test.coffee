@@ -121,3 +121,94 @@ describe 'Traffic', ->
           ✘ SkyTrain : [Something wrong.] Spider man is running on the rails.
           """
         expect(sent_text).to.eql message
+
+  context '定期確認', ->
+    traffic = null
+    # context '確認', ->
+    #   it 'ok', ->
+    #     robot =
+    #       brain:
+    #         data: {}
+    #         get: (key)->
+    #           if key in @data
+    #             @data[key]
+    #           else
+    #             null
+    #         set: (key, value)->
+    #             @data[key] = value
+    #     data = {}
+    #     expec(traffic.f(robot, )
+
+    context '正常のまま', ->
+      beforeEach ->
+        traffic = new Traffic()
+        traffic.channel = room.name
+
+        operating_wo_errors = true
+        traffic.regular_report(room.robot)
+
+        operating_wo_errors = true
+        traffic.regular_report(room.robot)
+
+      it '何も発言しない', (done)->
+        waitForMessagesToBe done, [
+        ]
+
+    context '異常になった', ->
+      beforeEach ->
+        traffic = new Traffic()
+        traffic.channel = room.name
+
+        operating_wo_errors = true
+        traffic.regular_report(room.robot)
+
+        operating_wo_errors = false
+        traffic.regular_report(room.robot)
+
+      it '報告', (done)->
+        message =
+          """
+          電車が止まったりしてるみたい。
+          ✔ Bus
+          ✘ SkyTrain : [Something wrong.] Spider man is running on the rails.
+          """
+        waitForMessagesToBe done, [
+          ['hubot', message]
+        ]
+
+    context '異常のまま', ->
+      beforeEach ->
+        traffic = new Traffic()
+        traffic.channel = room.name
+
+        operating_wo_errors = false
+        traffic.regular_report(room.robot)
+
+        operating_wo_errors = false
+        traffic.regular_report(room.robot)
+
+      it '何も発言しない', (done)->
+        waitForMessagesToBe done, [
+        ]
+
+    context '正常に戻った', ->
+      beforeEach ->
+        traffic = new Traffic()
+        traffic.channel = room.name
+
+        operating_wo_errors = false
+        traffic.regular_report(room.robot)
+
+        operating_wo_errors = true
+        traffic.regular_report(room.robot)
+
+      it '報告', (done)->
+        message =
+          """
+          平常運転に戻りました。
+          ✔ Bus
+          ✔ SkyTrain
+          """
+        waitForMessagesToBe done, [
+          ['hubot', message]
+        ]
