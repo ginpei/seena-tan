@@ -54,9 +54,8 @@ class Traffic
       message = '大丈夫そうだよー。'
     else
       message = '乱れてるみたい……。'
-    message +=
+    message += '\n'
       """
-
       #{@format_alert(bus)}
       #{@format_alert(train)}
       """
