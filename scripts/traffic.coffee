@@ -60,6 +60,7 @@ class Traffic
       """
       #{@format_alert(bus)}
       #{@format_alert(train)}
+      http://www.translink.ca/en/Schedules-and-Maps/Alerts.aspx
       """
 
   format_alert: (data)->

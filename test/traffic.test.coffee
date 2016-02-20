@@ -56,6 +56,7 @@ describe 'Traffic', ->
         大丈夫そうだよー。
         ✔ Bus
         ✔ SkyTrain
+        http://www.translink.ca/en/Schedules-and-Maps/Alerts.aspx
         """
 
       beforeEach ->
@@ -76,6 +77,7 @@ describe 'Traffic', ->
         乱れてるみたい……。
         ✔ Bus
         ✘ SkyTrain : [Something wrong.] Spider man is running on the rails.
+        http://www.translink.ca/en/Schedules-and-Maps/Alerts.aspx
         """
 
       beforeEach ->
@@ -119,6 +121,7 @@ describe 'Traffic', ->
           交通機関が乱れてるみたいだよ。気を付けてね。
           ✔ Bus
           ✘ SkyTrain : [Something wrong.] Spider man is running on the rails.
+          http://www.translink.ca/en/Schedules-and-Maps/Alerts.aspx
           """
         expect(sent_text).to.eql message
 
@@ -171,6 +174,7 @@ describe 'Traffic', ->
           電車が止まったりしてるみたい。
           ✔ Bus
           ✘ SkyTrain : [Something wrong.] Spider man is running on the rails.
+          http://www.translink.ca/en/Schedules-and-Maps/Alerts.aspx
           """
         waitForMessagesToBe done, [
           ['hubot', message]
@@ -208,6 +212,7 @@ describe 'Traffic', ->
           平常運転に戻りました。
           ✔ Bus
           ✔ SkyTrain
+          http://www.translink.ca/en/Schedules-and-Maps/Alerts.aspx
           """
         waitForMessagesToBe done, [
           ['hubot', message]
