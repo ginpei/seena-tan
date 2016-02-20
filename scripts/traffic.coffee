@@ -81,7 +81,7 @@ class Traffic
     else
       message =
         """
-        電車が止まったりしてるみたい。
+        交通機関が乱れてるみたいだよ。気を付けてね。
         #{@format_alert(bus)}
         #{@format_alert(train)}
         """
