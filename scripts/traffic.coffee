@@ -104,7 +104,7 @@ class Traffic
       if bus.fine and train.fine
         message = '平常運転に戻りました。'
       else
-        message = '電車が止まったりしてるみたい。'
+        message = '交通機関が乱れてるみたいだよ。気を付けてね。'
       message += '\n' +
         """
         #{@format_alert(bus)}

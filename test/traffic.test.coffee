@@ -171,7 +171,7 @@ describe 'Traffic', ->
       it '報告', (done)->
         message =
           """
-          電車が止まったりしてるみたい。
+          交通機関が乱れてるみたいだよ。気を付けてね。
           ✔ Bus
           ✘ SkyTrain : [Something wrong.] Spider man is running on the rails.
           http://www.translink.ca/en/Schedules-and-Maps/Alerts.aspx
