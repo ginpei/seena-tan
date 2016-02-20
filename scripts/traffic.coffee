@@ -12,6 +12,8 @@ translink_alerts = require('translink-alerts')
 _ = require('underscore')
 
 class Traffic
+  official_url: 'http://www.translink.ca/en/Schedules-and-Maps/Alerts.aspx'
+
   constructor: (options)->
     @channel = 'random'
     @cronTime = '0 */6 * * * *'
@@ -30,7 +32,7 @@ class Traffic
       res.send 'んーどうかな'
       @translink_alerts (err, alerts)=>
         if err
-          message = 'ごめん、えらった。'
+          message = 'ごめん、えらった。\n' + @official_url
         else
           res.reply @make_message(alerts)
 
@@ -69,7 +71,7 @@ class Traffic
   get_morning_message: (callback)->
     @translink_alerts (err, alerts)=>
       if err
-        callback('交通情報はよくわかりませんでした。')
+        callback('交通情報はよくわかりませんでした。\n' + @official_url)
         return
 
       callback(@make_morning_message(alerts))
@@ -84,6 +86,7 @@ class Traffic
         交通機関が乱れてるみたいだよ。気を付けてね。
         #{@format_alert(bus)}
         #{@format_alert(train)}
+        #{@official_url}
         """
 
   regular_report: (robot)->
@@ -105,6 +108,7 @@ class Traffic
         """
         #{@format_alert(bus)}
         #{@format_alert(train)}
+        #{@official_url}
         """
       robot.messageRoom @channel, message
 
