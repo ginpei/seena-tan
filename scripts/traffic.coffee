@@ -46,20 +46,20 @@ class Traffic
   translink_alerts: (callback)->
     translink_alerts (err, alerts)->
       if alerts
-        bus = _.findWhere(alerts, title:'Bus')
         train = _.findWhere(alerts, title:'SkyTrain')
-      callback(err, [bus, train])
+        bus = _.findWhere(alerts, title:'Bus')
+      callback(err, [train, bus])
 
   make_message: (alerts)->
-    [bus, train] = alerts
-    if bus.fine and train.fine
+    [train, bus] = alerts
+    if train.fine and bus.fine
       message = '大丈夫そうだよー。'
     else
       message = '乱れてるみたい……。'
     message += '\n' +
       """
-      #{@format_alert(bus)}
       #{@format_alert(train)}
+      #{@format_alert(bus)}
       http://www.translink.ca/en/Schedules-and-Maps/Alerts.aspx
       """
 
@@ -78,14 +78,13 @@ class Traffic
       callback(@make_morning_message(alerts))
 
   make_morning_message: (alerts)->
-    [bus, train] = alerts
-    if bus.fine and train.fine
-      message = '電車とバスは平常運転みたいです。'
+    [train] = alerts
+    if train.fine
+      message = 'SkyTrainは平常運転みたいです。'
     else
       message =
         """
         交通機関が乱れてるみたいだよ。気を付けてね。
-        #{@format_alert(bus)}
         #{@format_alert(train)}
         #{@official_url}
         """
@@ -96,18 +95,16 @@ class Traffic
       @tell_status(robot, alerts)
 
   tell_status: (robot, alerts)->
-    [bus, train] = alerts
+    [train] = alerts
 
-    bus_updated = @update_status(robot, bus)
     train_updated = @update_status(robot, train)
-    if bus_updated or train_updated
-      if bus.fine and train.fine
+    if train_updated
+      if train.fine
         message = '平常運転に戻りました。'
       else
         message = '交通機関が乱れてるみたいだよ。気を付けてね。'
       message += '\n' +
         """
-        #{@format_alert(bus)}
         #{@format_alert(train)}
         #{@official_url}
         """

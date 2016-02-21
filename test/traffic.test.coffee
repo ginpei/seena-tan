@@ -12,17 +12,17 @@ describe 'Traffic', ->
 
   operating_wo_errors = true
   result_ok = [
-    { title:'Bus', status:'Operating normally.', fine:true }
     { title:'SkyTrain', status:'Operating normally.', fine:true }
+    { title:'Bus', status:'Operating normally.', fine:true }
   ]
   result_ng = [
-    { title:'Bus', status:'Operating normally.', fine:true }
     {
       title: 'SkyTrain',
       status: 'Something wrong.',
       fine: false,
       detail: 'Spider man is running on the rails.'
     }
+    { title:'Bus', status:'Operating normally.', fine:true }
   ]
 
   waitForMessagesToBe = (done, expected)->
@@ -54,8 +54,8 @@ describe 'Traffic', ->
       reply_text =
         """
         大丈夫そうだよー。
-        ✔ Bus
         ✔ SkyTrain
+        ✔ Bus
         http://www.translink.ca/en/Schedules-and-Maps/Alerts.aspx
         """
 
@@ -75,8 +75,8 @@ describe 'Traffic', ->
       reply_text =
         """
         乱れてるみたい……。
-        ✔ Bus
         ✘ SkyTrain : [Something wrong.] Spider man is running on the rails.
+        ✔ Bus
         http://www.translink.ca/en/Schedules-and-Maps/Alerts.aspx
         """
 
@@ -104,7 +104,7 @@ describe 'Traffic', ->
           done()
 
       it '文言を返す', ->
-        expect(sent_text).to.eql '電車とバスは平常運転みたいです。'
+        expect(sent_text).to.eql 'SkyTrainは平常運転みたいです。'
 
     context '乱れているとき', ->
       sent_text = null
@@ -119,7 +119,6 @@ describe 'Traffic', ->
         message =
           """
           交通機関が乱れてるみたいだよ。気を付けてね。
-          ✔ Bus
           ✘ SkyTrain : [Something wrong.] Spider man is running on the rails.
           http://www.translink.ca/en/Schedules-and-Maps/Alerts.aspx
           """
@@ -172,7 +171,6 @@ describe 'Traffic', ->
         message =
           """
           交通機関が乱れてるみたいだよ。気を付けてね。
-          ✔ Bus
           ✘ SkyTrain : [Something wrong.] Spider man is running on the rails.
           http://www.translink.ca/en/Schedules-and-Maps/Alerts.aspx
           """
@@ -210,7 +208,6 @@ describe 'Traffic', ->
         message =
           """
           平常運転に戻りました。
-          ✔ Bus
           ✔ SkyTrain
           http://www.translink.ca/en/Schedules-and-Maps/Alerts.aspx
           """
