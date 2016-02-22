@@ -8,6 +8,18 @@ ForecastBot = require('./../scripts/forecast.coffee').ForecastBot
 Traffic = require('./../scripts/traffic.coffee').Traffic
 
 class Morning
+  @morning_messages: [
+    '(´ぅω・`)'
+    '(:3[＿＿]'
+    '\_:(´ཀ`」 ∠):\_'
+    '(-ω-)Zzz...　Σ(ﾟωﾟ)!'
+    '( ³ω³ )｡oO'
+    ':(∩ˇωˇ∩):'
+    '[▓▓▓▓] \_˙³˙)\_'
+    'c(・ω・`c⌒)つ'
+    '|∧,,∧\n| ･ω･)\n|⊂ ﾉ'
+  ]
+
   constructor: (options)->
     @channel = 'random'
     # @cronTime = '*/15 * * * * *'
@@ -48,18 +60,7 @@ class Morning
   @first_channel: 'seena_tan'
 
   @say_good_morning: (robot)->
-    candidates = [
-      '(´ぅω・`)'
-      '(:3[＿＿]'
-      '\_:(´ཀ`」 ∠):\_'
-      '(-ω-)Zzz...　Σ(ﾟωﾟ)!'
-      '( ³ω³ )｡oO'
-      ':(∩ˇωˇ∩):'
-      '[▓▓▓▓] \_˙³˙)\_'
-      'c(・ω・`c⌒)つ'
-      '|∧,,∧\n| ･ω･)\n|⊂ ﾉ'
-    ]
-    message = _.sample(candidates)
+    message = _.sample(Morning.morning_messages)
     robot.messageRoom Morning.first_channel, message
 
 module.exports = (robot) ->
