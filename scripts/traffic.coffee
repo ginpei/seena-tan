@@ -44,11 +44,8 @@ class Traffic
       @regular_report(robot)
 
   translink_alerts: (callback)->
-    translink_alerts (err, alerts)->
-      if alerts
-        train = _.findWhere(alerts, title:'SkyTrain')
-        bus = _.findWhere(alerts, title:'Bus')
-      callback(err, [train, bus])
+    translink_alerts.get (data)->
+      callback(null, [data.train, data.bus])
 
   make_message: (alerts)->
     [train, bus] = alerts
