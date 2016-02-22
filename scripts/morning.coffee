@@ -57,6 +57,7 @@ class Morning
       ':(∩ˇωˇ∩):'
       '[▓▓▓▓] \_˙³˙)\_'
       'c(・ω・`c⌒)つ'
+      '|∧,,∧\n| ･ω･)\n|⊂ ﾉ'
     ]
     message = _.sample(candidates)
     robot.messageRoom Morning.first_channel, message
