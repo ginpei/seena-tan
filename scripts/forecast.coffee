@@ -14,7 +14,7 @@ class ForecastBot
     @api_key = process.env.HUBOT_FORECAST_API_KEY
     @latitude = process.env.HUBOT_FORECAST_LAT
     @longitude = process.env.HUBOT_FORECAST_LONG
-    @timezone = process.env.HUBOT_FORECAST_TZ
+    @timezone = process.env.TZ
 
   start: (robot)->
     robot.respond /天気/, (res)=>

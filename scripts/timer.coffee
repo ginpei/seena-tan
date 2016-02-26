@@ -82,7 +82,7 @@ class Timer
       @default_duration
 
   now: ()->
-    moment.tz('America/Vancouver').locale('ja')
+    moment.tz(process.env.TZ).locale('ja')
 
   start_timer: (callback)->
     @tm_finish = setTimeout(callback, moment.duration(@duration))

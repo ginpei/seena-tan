@@ -34,7 +34,7 @@ class Morning
     @channel = 'random'
     # @cronTime = '*/15 * * * * *'
     @cronTime = '0 30 7 * * *'
-    @timezone = 'America/Vancouver'
+    @timezone = process.env.TZ
 
   start: (robot)->
     job = new CronJob(

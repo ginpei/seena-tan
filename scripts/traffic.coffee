@@ -17,7 +17,7 @@ class Traffic
   constructor: (options)->
     @channel = 'random'
     @cronTime = '0 */6 * * * *'
-    @timezone = 'America/Vancouver'
+    @timezone = process.env.TZ
 
   start: (robot)->
     job = new CronJob(
