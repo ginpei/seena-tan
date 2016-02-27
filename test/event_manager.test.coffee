@@ -83,6 +83,24 @@ describe 'EventManager', ->
             """]
         ]
 
+    context 'with valid date but duplicated', ->
+      beforeEach ->
+        room.robot.brain.set 'event_manager.events', JSON.stringify([
+          { date:'2000-12-13 12:59', name:'Hiking' }
+        ])
+        co ->
+          yield room.user.say 'alice', '@hubot event add 12-13 12:59 Hiking'
+
+      it 'tells what was happened', ->
+        expect(room.messages).to.eql [
+          ['alice', '@hubot event add 12-13 12:59 Hiking']
+          ['hubot',
+            """
+            @alice Hiking is already registered at the same time.
+            12-13 We 12:59 Hiking
+            """]
+        ]
+
     context 'with invalid date', ->
       beforeEach ->
         room.robot.brain.set 'event_manager.events', JSON.stringify([

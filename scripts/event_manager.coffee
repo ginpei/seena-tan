@@ -107,11 +107,18 @@ class EventManager
       event =
         date: date
         name: data.name
-      @add_event(event)
 
-      events = @get_current_events()
-      list = @make_list_message(events)
-      res.reply "#{data.name} is successfully registered.\n#{list}"
+      if @get_event(event)
+        events = @get_current_events()
+        list = @make_list_message(events)
+        res.reply "#{data.name} is already registered at the same time.\n#{list}"
+
+      else
+        @add_event(event)
+
+        events = @get_current_events()
+        list = @make_list_message(events)
+        res.reply "#{data.name} is successfully registered.\n#{list}"
 
     else
       res.reply 'It looks invalid date and/or time! Date has to be like: "1-1 0:0" or "12-31 23:59".'
