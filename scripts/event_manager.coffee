@@ -25,14 +25,14 @@ class EventManager
     robot.respond /event$/, (res)=>
       @respond_on_usage(res)
 
-    robot.respond /event\slist$/, (res)=>
+    robot.respond /event list$/, (res)=>
       @respond_on_list(res)
 
-    robot.respond /event\sadd\s(\d{1,2}-\d{1,2} \d{1,2}:\d{1,2})\s(.*)/, (res)=>
+    robot.respond /event add (\d{1,2}-\d{1,2} \d{1,2}:\d{1,2}) (.*)/, (res)=>
       [none, datetime, name] = res.match
       @respond_on_add(res, { datetime, name })
 
-    robot.respond /event\sremove\s(\d{1,2}-\d{1,2} \d{1,2}:\d{1,2})\s(.*)/, (res)=>
+    robot.respond /event remove (\d{1,2}-\d{1,2} \d{1,2}:\d{1,2}) (.*)/, (res)=>
       [none, datetime, name] = res.match
       date = @parse_time(datetime)
       @respond_on_remove(res, { date, name })
