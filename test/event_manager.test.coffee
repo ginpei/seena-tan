@@ -4,8 +4,6 @@ expect = require('chai').expect
 sinon = require('sinon')
 moment = require('moment-timezone')
 
-TZ = process.env.TZ
-
 PATH = './../scripts/event_manager.coffee'
 EventManager = require(PATH).EventManager
 
