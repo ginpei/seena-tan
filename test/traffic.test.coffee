@@ -10,12 +10,12 @@ describe 'Traffic', ->
   room = null
   helper = new Helper(PATH)
 
-  operating_wo_errors = true
+  traffic_error = null
   result_ok = [
     { title:'SkyTrain', status:'Operating normally.', fine:true }
     { title:'Bus', status:'Operating normally.', fine:true }
   ]
-  result_ng = [
+  result_ng_train = [
     {
       title: 'SkyTrain',
       status: 'Something wrong.',
@@ -37,10 +37,10 @@ describe 'Traffic', ->
   beforeEach ->
     sinon.stub Traffic.prototype, 'translink_alerts', (callback)->
       setTimeout ->
-        if operating_wo_errors
-          result = result_ok
+        if traffic_error is 'train'
+          result = result_ng_train
         else
-          result = result_ng
+          result = result_ok
         callback(null, result)
       , 20
     room = helper.createRoom()
@@ -61,7 +61,7 @@ describe 'Traffic', ->
 
       beforeEach ->
         co ->
-          operating_wo_errors = true
+          traffic_error = null
           yield room.user.say 'alice', '@hubot 電車大丈夫？'
 
       it '返信する', (done)->
@@ -82,7 +82,7 @@ describe 'Traffic', ->
 
       beforeEach ->
         co ->
-          operating_wo_errors = false
+          traffic_error = 'train'
           yield room.user.say 'alice', '@hubot 電車大丈夫？'
 
       it '返信する', (done)->
@@ -98,7 +98,7 @@ describe 'Traffic', ->
       sent_text = null
 
       beforeEach (done)->
-        operating_wo_errors = true
+        traffic_error = null
         Traffic.get_morning_message (message)->
           sent_text = message
           done()
@@ -110,7 +110,7 @@ describe 'Traffic', ->
       sent_text = null
 
       beforeEach (done)->
-        operating_wo_errors = false
+        traffic_error = 'train'
         Traffic.get_morning_message (message)->
           sent_text = message
           done()
@@ -146,10 +146,10 @@ describe 'Traffic', ->
         traffic = new Traffic()
         traffic.channel = room.name
 
-        operating_wo_errors = true
+        traffic_error = null
         traffic.regular_report(room.robot)
 
-        operating_wo_errors = true
+        traffic_error = null
         traffic.regular_report(room.robot)
 
       it '何も発言しない', (done)->
@@ -161,10 +161,10 @@ describe 'Traffic', ->
         traffic = new Traffic()
         traffic.channel = room.name
 
-        operating_wo_errors = true
+        traffic_error = null
         traffic.regular_report(room.robot)
 
-        operating_wo_errors = false
+        traffic_error = 'train'
         traffic.regular_report(room.robot)
 
       it '報告', (done)->
@@ -183,10 +183,10 @@ describe 'Traffic', ->
         traffic = new Traffic()
         traffic.channel = room.name
 
-        operating_wo_errors = false
+        traffic_error = 'train'
         traffic.regular_report(room.robot)
 
-        operating_wo_errors = false
+        traffic_error = 'train'
         traffic.regular_report(room.robot)
 
       it '何も発言しない', (done)->
@@ -198,10 +198,10 @@ describe 'Traffic', ->
         traffic = new Traffic()
         traffic.channel = room.name
 
-        operating_wo_errors = false
+        traffic_error = 'train'
         traffic.regular_report(room.robot)
 
-        operating_wo_errors = true
+        traffic_error = null
         traffic.regular_report(room.robot)
 
       it '報告', (done)->
