@@ -36,11 +36,11 @@ class Traffic
         else
           res.reply @make_message(alerts)
 
-    robot.respond /--debug-traffic/, (res)=>
+    robot.respond /--debug-traffic$/, (res)=>
       Traffic.get_morning_message (message)=>
         res.reply message
 
-    robot.respond /--debug-traffic-update/, (res)=>
+    robot.respond /--debug-traffic-update$/, (res)=>
       @regular_report(robot)
 
   translink_alerts: (callback)->
