@@ -112,6 +112,8 @@ class Traffic
     key = "traffic-status-#{data.title}";
     json = JSON.stringify(data)
     last_json = robot.brain.get(key)
+    console.log "[Traffic] last_json: #{last_json}"
+    console.log "[Traffic] ---> json: #{json}"
 
     if json isnt last_json
       robot.brain.set(key, json)
