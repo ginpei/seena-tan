@@ -163,3 +163,58 @@ describe 'HouseCleaning', ->
           """ ]
         ]
 
+    context 'hubot house-cleaning latest', ->
+      beforeEach ->
+        co ->
+          yield room.user.say 'alice', '@hubot house-cleaning rand'
+          yield room.user.say 'alice', '@hubot house-cleaning latest'
+
+      it 'adds the new place', ->
+        expect(room.messages).to.eql [
+          ['alice', '@hubot house-cleaning rand']
+          ['hubot', """
+            @alice Here's the oracle.
+            - Alice = Kitchen 2
+            - Bob = Kitchen 1
+            - Carol = Entrance
+            - Eve = Bathroom
+          """ ]
+          ['alice', '@hubot house-cleaning latest']
+          ['hubot', """
+            @alice Here's the oracle.
+            - Alice = Kitchen 2
+            - Bob = Kitchen 1
+            - Carol = Entrance
+            - Eve = Bathroom
+          """ ]
+        ]
+
+    context 'hubot 掃除当番教えて', ->
+      beforeEach ->
+        co ->
+          yield room.user.say 'alice', '@hubot 掃除当番更新'
+          yield room.user.say 'alice', '@hubot 掃除当番教えて'
+          yield room.user.say 'alice', '@hubot 掃除当番どうだっけ？'
+          yield room.user.say 'alice', '@hubot 私の掃除当番は何ですか'
+          yield room.user.say 'alice', '@hubot あのう、掃除当番なんでしたっけ……'
+
+      it 'adds the new place', ->
+        oracle = """
+          @alice Here's the oracle.
+          - Alice = Kitchen 2
+          - Bob = Kitchen 1
+          - Carol = Entrance
+          - Eve = Bathroom
+        """
+        expect(room.messages).to.eql [
+          ['alice', '@hubot 掃除当番更新']
+          ['hubot', oracle ]
+          ['alice', '@hubot 掃除当番教えて']
+          ['hubot', oracle ]
+          ['alice', '@hubot 掃除当番どうだっけ？']
+          ['hubot', oracle ]
+          ['alice', '@hubot 私の掃除当番は何ですか']
+          ['hubot', oracle ]
+          ['alice', '@hubot あのう、掃除当番なんでしたっけ……']
+          ['hubot', oracle ]
+        ]

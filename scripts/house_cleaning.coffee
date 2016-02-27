@@ -45,6 +45,7 @@ class Place extends Brain
   @KEY: 'HouseCleaning.Place'
 
 class HouseCleaning
+  @KEY_ORACLE: 'HouseCleaning.latest_oracle'
   @MSG_USAGE:
     """
     Usage
@@ -52,6 +53,8 @@ class HouseCleaning
     """
 
   start: (robot)->
+    @brain = robot.brain
+
     robot.respond /house-cleaning$/, (res)=>
       @respond_on_usage(res)
 
@@ -74,8 +77,14 @@ class HouseCleaning
     robot.respond /house-cleaning rand$/, (res)=>
       @respond_on_rand(res)
 
-    robot.respond /掃除当番.*更新/, (res)=>
+    robot.respond /house-cleaning latest$/, (res)=>
       @respond_on_rand(res)
+
+    robot.respond /(?:.*)掃除当番.*更新/, (res)=>
+      @respond_on_rand(res)
+
+    robot.respond /(?:.*)掃除当番.*(?:教えて|だっけ|です|でした)/, (res)=>
+      @respond_on_latest(res)
 
   make_user_list: ()->
     User.all()
@@ -86,6 +95,12 @@ class HouseCleaning
     Place.all()
       .map((place)->"- #{place.name}")
       .join('\n')
+
+  save_oracle: (content)->
+    @brain.set(@constructor.KEY_ORACLE, content)
+
+  load_oracle: ()->
+    @brain.get(@constructor.KEY_ORACLE)
 
   respond_on_usage: (res)->
     res.reply @constructor.MSG_USAGE
@@ -117,10 +132,18 @@ class HouseCleaning
     users = User.all()
     places = Place.shuffle()
 
-    message = 'Here\'s the oracle.\n' + users
+    oracle = users
       .map((user, index)-> "- #{user.name} = #{places[index].name}")
       .join('\n')
 
+    @save_oracle(oracle)
+
+    message = "Here's the oracle.\n#{oracle}"
+    res.reply message
+
+  respond_on_latest: (res)->
+    oracle = @load_oracle()
+    message = "Here's the oracle.\n#{oracle}"
     res.reply message
 
 HouseCleaning.User = User
