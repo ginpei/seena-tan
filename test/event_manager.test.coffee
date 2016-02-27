@@ -33,6 +33,7 @@ describe 'EventManager', ->
   context 'hubot event list', ->
     beforeEach ->
       room.robot.brain.set 'event_manager.events', JSON.stringify([
+        { date:'2000-11-30 12:00', name:'Lunch at Sugoi Sushi' }
         { date:'2000-12-02 09:08', name:'Meet up' }
         { date:'2000-12-13 12:59', name:'Hiking' }
         { date:'2001-01-02 19:00', name:'New Year Party' }
@@ -40,7 +41,7 @@ describe 'EventManager', ->
       co ->
         yield room.user.say 'alice', '@hubot event list'
 
-    it 'shows the list', ->
+    it 'shows the list of events without expired items', ->
       expect(room.messages).to.eql [
         ['alice', '@hubot event list']
         [
