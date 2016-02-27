@@ -113,24 +113,27 @@ describe 'HouseCleaning', ->
         """ ]
       ]
 
-  context 'hubot house-cleaning rand', ->
+  context 'oracle', ->
     beforeEach ->
-      sinon.stub HouseCleaning.Place, 'shuffle', ()-> HouseCleaning.Place.all()
-      co ->
-        yield room.user.say 'alice', '@hubot house-cleaning rand'
+      sinon.stub HouseCleaning.Place, 'shuffle', ()-> @all().reverse()
 
     afterEach ->
       HouseCleaning.Place.shuffle.restore()
 
-    it 'adds the new place', ->
-      expect(room.messages).to.eql [
-        ['alice', '@hubot house-cleaning rand']
-        ['hubot', """
-          @alice Here's the oracle.
-          - Alice = Bathroom
-          - Bob = Entrance
-          - Carol = Kitchen 1
-          - Eve = Kitchen 2
-        """ ]
-      ]
+    context 'hubot house-cleaning rand', ->
+      beforeEach ->
+        co ->
+          yield room.user.say 'alice', '@hubot house-cleaning rand'
+
+      it 'adds the new place', ->
+        expect(room.messages).to.eql [
+          ['alice', '@hubot house-cleaning rand']
+          ['hubot', """
+            @alice Here's the oracle.
+            - Alice = Kitchen 2
+            - Bob = Kitchen 1
+            - Carol = Entrance
+            - Eve = Bathroom
+          """ ]
+        ]
 
