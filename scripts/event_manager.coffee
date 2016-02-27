@@ -37,6 +37,10 @@ class EventManager
       date = @parse_time(datetime)
       @respond_on_remove(res, { date, name })
 
+    robot.respond /--debug-event-morning/, (res)=>
+      message = @constructor.get_morning_message(@brain)
+      res.send message
+
   # @param {String} event.name
   # @param {Moment} event.date
   add_event: (event)->
@@ -134,6 +138,18 @@ class EventManager
       res.reply "#{event.name} is successfully removed."
     else
       res.reply 'Sorry, the event you specified is not found.'
+
+  @get_morning_message: (brain)->
+    events = @get_todays_events(brain)
+    message = events
+      .map((e)->"#{e.date.format('HH:mm')} #{e.name}")
+      .join('\n')
+
+  @get_todays_events: (brain)->
+    now = @prototype.now()
+    events = JSON.parse(brain.get('event_manager.events') or '[]')
+      .map((e)-> e.date = moment.tz(e.date, TZ); e)
+      .filter((e)-> e.date.isSame(now, 'day'))
 
 module.exports = (robot)->
   event_manager = new EventManager()

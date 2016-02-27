@@ -149,6 +149,27 @@ describe 'EventManager', ->
         """]
       ]
 
+  context 'get_morning_message', ->
+    context 'some', ->
+      message = null
+
+      beforeEach ->
+        room.robot.brain.set 'event_manager.events', JSON.stringify([
+          { date:'2000-12-01 12:00', name:'Lunch at Sugoi Sushi' }
+          { date:'2000-12-01 19:00', name:'Meet up' }
+        ])
+        co ->
+          yield room.user.say 'alice', '@hubot --debug-event-morning'
+
+      it 'returns a message', ->
+        expect(room.messages).to.eql [
+          ['alice', '@hubot --debug-event-morning']
+          ['hubot', """
+            12:00 Lunch at Sugoi Sushi
+            19:00 Meet up
+          """]
+        ]
+
   context '#parse_time()', ->
     obj = null
     beforeEach ->

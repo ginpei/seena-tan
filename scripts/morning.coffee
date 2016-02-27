@@ -6,6 +6,7 @@ moment = require('moment-timezone')
 _ = require('lodash')
 ForecastBot = require('./../scripts/forecast.coffee').ForecastBot
 Traffic = require('./../scripts/traffic.coffee').Traffic
+EventManager = require('./../scripts/event_manager.coffee').EventManager
 
 class Morning
   @morning_messages: [
@@ -45,24 +46,37 @@ class Morning
       timeZone: @timezone
     )
 
+    robot.respond /--debug-morning-greet/, (res)=>
+      @greet(robot)
+
   greet: (robot)->
+    first_message = 'おはよう～！'
+    event_message = @get_event_message(robot.brain)
+    if event_message
+      first_message += "　今日はイベントがあるよ。\n#{event_message}"
+
+    robot.messageRoom @channel, first_message
+
     bot = new ForecastBot()
     bot.get_morning_forecast null, (forecast)=>
-      message = @build_message(forecast)
+      message = @build_forecast_message(forecast)
       robot.messageRoom @channel, message
 
       @get_traffic (message)=>
         robot.messageRoom @channel, message
 
-  build_message: (forecast)->
+  build_forecast_message: (forecast)->
     if forecast
       message =
         """
-        おはよう～！　天気予報だよ。
+        天気予報はこんな感じ。
         #{forecast}
         """
     else
-      message = 'おはよう～！　今日は天気予報が用意できなかったよ、ごめんね。'
+      message = '今日は天気予報が用意できなかったよ、ごめんね……。'
+
+  get_event_message: (brain)->
+    EventManager.get_morning_message(brain)
 
   get_traffic: (callback)->
     Traffic.get_morning_message callback
