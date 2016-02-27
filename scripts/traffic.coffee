@@ -109,7 +109,7 @@ class Traffic
 
   # returns {Boolean} `true`=Something is changed.
   update_status: (robot, data)->
-    key = "traffic-status-#{data.title}";
+    key = "traffic-status-#{data.title}"
     json = JSON.stringify(data)
     last_json = robot.brain.get(key)
 
