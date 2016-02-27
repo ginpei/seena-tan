@@ -74,6 +74,9 @@ class HouseCleaning
     robot.respond /house-cleaning rand$/, (res)=>
       @respond_on_rand(res)
 
+    robot.respond /掃除当番.*更新/, (res)=>
+      @respond_on_rand(res)
+
   make_user_list: ()->
     User.all()
       .map((user)->"- #{user.name}")

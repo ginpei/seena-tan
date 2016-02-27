@@ -137,3 +137,29 @@ describe 'HouseCleaning', ->
           """ ]
         ]
 
+    context 'hubot 掃除当番更新', ->
+      beforeEach ->
+        co ->
+          yield room.user.say 'alice', '@hubot 掃除当番更新'
+          yield room.user.say 'alice', '@hubot 掃除当番を更新して'
+
+      it 'adds the new place', ->
+        expect(room.messages).to.eql [
+          ['alice', '@hubot 掃除当番更新']
+          ['hubot', """
+            @alice Here's the oracle.
+            - Alice = Kitchen 2
+            - Bob = Kitchen 1
+            - Carol = Entrance
+            - Eve = Bathroom
+          """ ]
+          ['alice', '@hubot 掃除当番を更新して']
+          ['hubot', """
+            @alice Here's the oracle.
+            - Alice = Kitchen 2
+            - Bob = Kitchen 1
+            - Carol = Entrance
+            - Eve = Bathroom
+          """ ]
+        ]
+
