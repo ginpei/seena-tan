@@ -24,6 +24,15 @@ describe 'Traffic', ->
     }
     { title:'Bus', status:'Operating normally.', fine:true }
   ]
+  result_ng_bus = [
+    { title:'SkyTrain', status:'Operating normally.', fine:true }
+    {
+      title: 'Bus',
+      status: 'Something wrong.',
+      fine: false,
+      detail: 'Spider man is running on the rails.'
+    }
+  ]
 
   waitForMessagesToBe = (done, expected)->
     if expected.length is room.messages.length
@@ -39,6 +48,8 @@ describe 'Traffic', ->
       setTimeout ->
         if traffic_error is 'train'
           result = result_ng_train
+        else if traffic_error is 'bus'
+          result = result_ng_bus
         else
           result = result_ok
         callback(null, result)
@@ -156,7 +167,7 @@ describe 'Traffic', ->
         waitForMessagesToBe done, [
         ]
 
-    context '異常になった', ->
+    context '電車が異常になった', ->
       beforeEach ->
         traffic = new Traffic()
         traffic.channel = room.name
@@ -178,7 +189,7 @@ describe 'Traffic', ->
           ['hubot', message]
         ]
 
-    context '異常のまま', ->
+    context '電車が異常のまま', ->
       beforeEach ->
         traffic = new Traffic()
         traffic.channel = room.name
@@ -193,7 +204,7 @@ describe 'Traffic', ->
         waitForMessagesToBe done, [
         ]
 
-    context '正常に戻った', ->
+    context '電車が正常に戻った', ->
       beforeEach ->
         traffic = new Traffic()
         traffic.channel = room.name
@@ -213,4 +224,34 @@ describe 'Traffic', ->
           """
         waitForMessagesToBe done, [
           ['hubot', message]
+        ]
+
+    context 'バスが異常になった', ->
+      beforeEach ->
+        traffic = new Traffic()
+        traffic.channel = room.name
+
+        traffic_error = null
+        traffic.regular_report(room.robot)
+
+        traffic_error = 'bus'
+        traffic.regular_report(room.robot)
+
+      it '何も発言しない', (done)->
+        waitForMessagesToBe done, [
+        ]
+
+    context 'バスが正常に戻った', ->
+      beforeEach ->
+        traffic = new Traffic()
+        traffic.channel = room.name
+
+        traffic_error = 'bus'
+        traffic.regular_report(room.robot)
+
+        traffic_error = null
+        traffic.regular_report(room.robot)
+
+      it '何も発言しない', (done)->
+        waitForMessagesToBe done, [
         ]
