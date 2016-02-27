@@ -49,9 +49,9 @@ describe 'EventManager', ->
           'hubot',
           """
           @alice Events:
-          12-02 09:08 Meet up
-          12-13 12:59 Hiking
-          01-02 19:00 New Year Party
+          12-02 Sa 09:08 Meet up
+          12-13 We 12:59 Hiking
+          01-02 Tu 19:00 New Year Party
           """
         ]
       ]
@@ -72,16 +72,16 @@ describe 'EventManager', ->
           ['hubot',
             """
             @alice Meet up is successfully registered.
-            12-02 19:30 Meet up
-            12-13 12:59 Hiking
+            12-02 Sa 19:30 Meet up
+            12-13 We 12:59 Hiking
             """]
           ['alice', '@hubot event add 1-2 9:8 New Year Party']
           ['hubot',
             """
             @alice New Year Party is successfully registered.
-            12-02 19:30 Meet up
-            12-13 12:59 Hiking
-            01-02 09:08 New Year Party
+            12-02 Sa 19:30 Meet up
+            12-13 We 12:59 Hiking
+            01-02 Tu 09:08 New Year Party
             """]
         ]
 
@@ -101,7 +101,7 @@ describe 'EventManager', ->
           ['alice', '@hubot event list']
           ['hubot', """
             @alice Events:
-            12-13 12:59 Hiking
+            12-13 We 12:59 Hiking
           """]
         ]
 
@@ -128,7 +128,7 @@ describe 'EventManager', ->
         ['alice', '@hubot event list']
         ['hubot', """
           @alice Events:
-          12-02 09:08 Meet up
+          12-02 Sa 09:08 Meet up
         """]
       ]
 
