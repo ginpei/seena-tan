@@ -1,5 +1,5 @@
 # Description:
-#   イベント管理
+#   Manage events.
 #
 # Commands:
 #   hubot event - Show usage
