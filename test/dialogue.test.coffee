@@ -1,8 +1,6 @@
 Helper = require('hubot-test-helper')
 co = require('co')
 expect = require('chai').expect
-sinon = require('sinon')
-moment = require('moment-timezone')
 
 PATH = './../scripts/dialogue.coffee'
 Dialogue = require(PATH).Dialogue
@@ -12,7 +10,6 @@ describe 'Dialogue', ->
   helper = new Helper(PATH)
 
   beforeEach ->
-    # sinon.stub Dialogue.prototype, 'now', ()-> moment.tz('2000-12-01 12:00', process.env.TZ)
     room = helper.createRoom()
     room.robot.brain.set 'Dialogue.User', JSON.stringify([
       { id:'alice', name:'Alice Skywalker' }
@@ -20,7 +17,6 @@ describe 'Dialogue', ->
 
   afterEach ->
     room.destroy()
-    # Dialogue.prototype.now.restore()
 
   context 'hubot dialogue user', ->
     beforeEach ->
