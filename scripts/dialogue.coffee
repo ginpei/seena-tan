@@ -18,6 +18,7 @@ class Dialogue
     @robot = robot
 
     robot.respond /(.*)/, (res)=>
+      return if @is_matched_others(res)
       message = res.match[1]
       @respond_on_request(res, message)
 
@@ -29,6 +30,18 @@ class Dialogue
         id: res.match[1]
         name: res.match[2]
       @respond_on_user_add(res, attr)
+
+  is_matched_others: (res)->
+    message = res.match[0]
+    robot = res.robot
+
+    robot_name = robot.name
+      .replace(/([-])/g, '\\$1')  # not sure if there are any other chars
+    this_rx_str = "/^\\s*[@]?#{robot_name}[:,]?\\s*(?:(.*))/"
+
+    matched = robot.listeners.some (listener)->
+      rx = listener.regex
+      rx.toString() isnt this_rx_str and rx.test(message)
 
   send_request: (res, content, callback)->
     res.http(@constructor.API_URL)
