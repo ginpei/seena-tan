@@ -112,10 +112,14 @@ class Traffic
     key = "traffic-status-#{data.title}"
     json = JSON.stringify(data)
     last_json = robot.brain.get(key)
+    last_data = JSON.parse(last_json || '{}')
 
     if json isnt last_json
       robot.brain.set(key, json)
-      return true
+      if !last_json or data.fine and last_data.fine
+        return false
+      else
+        return true
     else
       return false
 

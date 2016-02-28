@@ -12,28 +12,35 @@ describe 'Traffic', ->
 
   traffic_error = null
   result_ok = [
-    { title:'SkyTrain', status:'Operating normally.', fine:true }
-    { title:'Bus', status:'Operating normally.', fine:true }
+    { title:'SkyTrain', status:'Operating normally.', effective:'Feb 27 2016 12:57:PM', fine:true }
+    { title:'Bus',      status:'Operating normally.', effective:'Feb 27 2016 12:57:PM', fine:true }
+  ]
+  result_ok2 = [
+    { title:'SkyTrain', status:'Operating normally.', effective:'Feb 27 2016 12:58:PM', fine:true }
+    { title:'Bus',      status:'Operating normally.', effective:'Feb 27 2016 12:58:PM', fine:true }
   ]
   result_ng_train = [
     {
       title: 'SkyTrain',
       status: 'Something wrong.',
+      effective:'Feb 27 2016 12:57:PM',
       fine: false,
       detail: 'Spider man is running on the rails.'
     }
-    { title:'Bus', status:'Operating normally.', fine:true }
+    { title:'Bus', status:'Operating normally.', effective:'Feb 27 2016 12:57:PM', fine:true }
   ]
   result_ng_bus = [
-    { title:'SkyTrain', status:'Operating normally.', fine:true }
+    { title:'SkyTrain', status:'Operating normally.', effective:'Feb 27 2016 12:57:PM', fine:true }
     {
       title: 'Bus',
       status: 'Something wrong.',
+      effective:'Feb 27 2016 12:57:PM',
       fine: false,
       detail: 'Spider man is running on the rails.'
     }
   ]
 
+  # FIXME: this way isn't working well. Updating to wait all messages is required.
   waitForMessagesToBe = (done, expected)->
     if expected.length is room.messages.length
       expect(room.messages).to.eql expected
@@ -50,6 +57,8 @@ describe 'Traffic', ->
           result = result_ng_train
         else if traffic_error is 'bus'
           result = result_ng_bus
+        else if traffic_error is 'ok2'
+          result = result_ok2
         else
           result = result_ok
         callback(null, result)
@@ -167,16 +176,41 @@ describe 'Traffic', ->
         waitForMessagesToBe done, [
         ]
 
-    context '電車が異常になった', ->
-      beforeEach ->
+    context '正常のままだが内容更新', ->
+      beforeEach (done)->
         traffic = new Traffic()
         traffic.channel = room.name
 
         traffic_error = null
         traffic.regular_report(room.robot)
 
-        traffic_error = 'train'
+        setTimeout ->
+          traffic_error = 'ok2'
+          traffic.regular_report(room.robot)
+          setTimeout ->
+            done()
+          , 30
+        , 30
+
+      it '何も発言しない', (done)->
+        waitForMessagesToBe done, [
+        ]
+
+    context '電車が異常になった', ->
+      beforeEach (done)->
+        traffic = new Traffic()
+        traffic.channel = room.name
+
+        traffic_error = null
         traffic.regular_report(room.robot)
+
+        setTimeout ->
+          traffic_error = 'train'
+          traffic.regular_report(room.robot)
+          setTimeout ->
+            done()
+          , 30
+        , 30
 
       it '報告', (done)->
         message =
@@ -205,15 +239,20 @@ describe 'Traffic', ->
         ]
 
     context '電車が正常に戻った', ->
-      beforeEach ->
+      beforeEach (done)->
         traffic = new Traffic()
         traffic.channel = room.name
 
         traffic_error = 'train'
         traffic.regular_report(room.robot)
 
-        traffic_error = null
-        traffic.regular_report(room.robot)
+        setTimeout ->
+          traffic_error = null
+          traffic.regular_report(room.robot)
+          setTimeout ->
+            done()
+          , 30
+        , 30
 
       it '報告', (done)->
         message =
