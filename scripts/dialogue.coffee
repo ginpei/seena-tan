@@ -48,22 +48,28 @@ class Dialogue
       .join('\n')
 
   respond_on_request: (res, message)->
-    content =
-      utt: message
-      content: @context
-      # nickname: ''
-      # nickname_y: ''
-      t: 20
-
+    content = @make_content(res, message)
     @send_request res, content, (data)=>
       res.reply data.utt
       @context = data.context
+
+  make_content: (res, message)->
+    content =
+      utt: message
+      content: @context
+      nickname: @get_user_nickname(res.message.user.name)
+      t: 20
+
+  get_user_nickname: (id)->
+    user = User.find_where(id:id?.toLowerCase())
+    user?.name
 
   respond_on_user: (res)->
     message = @make_user_list()
     res.send(message)
 
   respond_on_user_add: (res, attr)->
+    attr.id = attr.id.toLowerCase()
     user = new User(attr)
     user.save()
 

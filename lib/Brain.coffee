@@ -1,3 +1,5 @@
+_ = require('underscore')
+
 class Brain
   constructor: (attr)->
     @[key] = value for key, value of attr
@@ -13,6 +15,9 @@ class Brain
 
   @all: ()->
     JSON.parse(@brain.get(@KEY) or '[]')
+
+  @find_where: (attr)->
+    _.findWhere(@all(), attr)
 
   @save: (data)->
     @brain.set(@KEY, JSON.stringify(data))

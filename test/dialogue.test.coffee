@@ -39,6 +39,7 @@ describe 'Dialogue', ->
     beforeEach ->
       co ->
         yield room.user.say 'alice', '@hubot dialogue user add bob Bob Gibson'
+        yield room.user.say 'alice', '@hubot dialogue user add Carol Caro-san'
 
     it 'adds the user', ->
       expect(room.messages).to.eql [
@@ -46,5 +47,11 @@ describe 'Dialogue', ->
         ['hubot', """
         - alice = Alice Skywalker
         - bob = Bob Gibson
+        """]
+        ['alice', '@hubot dialogue user add Carol Caro-san']
+        ['hubot', """
+        - alice = Alice Skywalker
+        - bob = Bob Gibson
+        - carol = Caro-san
         """]
       ]
