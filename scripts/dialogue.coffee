@@ -23,7 +23,7 @@ class Dialogue
       t: 20
 
     @send_request res, content, (data)=>
-      res.send data.utt
+      res.reply data.utt
       @context = data.context
 
   send_request: (res, content, callback)->
