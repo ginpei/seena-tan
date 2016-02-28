@@ -6,25 +6,29 @@
 
 _ = require('underscore')
 
+Brain = require('../lib/Brain.coffee')
+
+class User extends Brain
+  @KEY: 'Dialogue.User'
+
 class Dialogue
   @API_URL: 'https://api.apigw.smt.docomo.ne.jp/dialogue/v1/dialogue'
 
   start: (robot)->
+    @robot = robot
+
     robot.respond /(.*)/, (res)=>
       message = res.match[1]
       @respond_on_request(res, message)
 
-  respond_on_request: (res, message)->
-    content =
-      utt: message
-      content: @context
-      # nickname: ''
-      # nickname_y: ''
-      t: 20
+    robot.respond /dialogue user$/, (res)=>
+      @respond_on_user(res)
 
-    @send_request res, content, (data)=>
-      res.reply data.utt
-      @context = data.context
+    robot.respond /dialogue user add (\w*) (.*)$/, (res)=>
+      attr =
+        id: res.match[1]
+        name: res.match[2]
+      @respond_on_user_add(res, attr)
 
   send_request: (res, content, callback)->
     res.http(@constructor.API_URL)
@@ -38,8 +42,39 @@ class Dialogue
           data = JSON.parse(body)
           callback(data)
 
+  make_user_list: ()->
+    test = User.all()
+      .map((user)->"- #{user.id} = #{user.name}")
+      .join('\n')
+
+  respond_on_request: (res, message)->
+    content =
+      utt: message
+      content: @context
+      # nickname: ''
+      # nickname_y: ''
+      t: 20
+
+    @send_request res, content, (data)=>
+      res.reply data.utt
+      @context = data.context
+
+  respond_on_user: (res)->
+    message = @make_user_list()
+    res.send(message)
+
+  respond_on_user_add: (res, attr)->
+    user = new User(attr)
+    user.save()
+
+    message = @make_user_list()
+    res.send(message)
+
 module.exports = (robot)->
+  User.set_brain(robot.brain)
+
   dialogue = new Dialogue()
   dialogue.start(robot)
 
 module.exports.Dialogue = Dialogue
+module.exports.Dialogue.User = User
