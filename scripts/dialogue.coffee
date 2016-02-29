@@ -61,7 +61,10 @@ class Dialogue
   respond_on_request: (res, message)->
     content = @make_content(res, message)
     @send_request res, content, (data)=>
-      res.reply data.utt
+      rx_bot_name = /桜子/g
+      hubot_name = 'スェナたん'
+      message = data.utt.replace(rx_bot_name, hubot_name)
+      res.reply message
       @context = data.context
 
   make_content: (res, message)->
