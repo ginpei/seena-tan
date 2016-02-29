@@ -4,8 +4,6 @@
 # Commands:
 #   hubot * - Talk.
 
-_ = require('underscore')
-
 Brain = require('../lib/Brain.coffee')
 
 class User extends Brain
