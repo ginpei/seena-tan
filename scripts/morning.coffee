@@ -27,6 +27,11 @@ class Morning
     | ･ω･)
     |⊂ ﾉ
     """
+    """
+    .　　/⌒っ⌒つ ｺﾞﾛｺﾞﾛ～
+    　＜'･зっ　つ
+    　 ∠､･ノ ￣
+    """
   ]
 
   constructor: (options)->
