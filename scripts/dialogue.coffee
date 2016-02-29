@@ -14,6 +14,7 @@ class Dialogue
 
   start: (robot)->
     @robot = robot
+    @brain = robot.brain
 
     robot.respond /(.*)/, (res)=>
       return if @is_matched_others(res)
@@ -28,6 +29,10 @@ class Dialogue
         id: res.match[1]
         name: res.match[2]
       @respond_on_user_add(res, attr)
+
+    robot.respond /dialogue set special_style_name (.*)$/, (res)=>
+      target_name = res.match[1]
+      @brain.set('Dialogue.special_style_name', target_name)
 
   is_matched_others: (res)->
     message = res.match[0]
@@ -73,6 +78,12 @@ class Dialogue
       content: @context
       nickname: @get_user_nickname(res.message.user.name)
       t: 20
+
+    target_name = @brain.get('Dialogue.special_style_name')
+    if res.message.user.name is target_name
+      content.t = 30
+
+    content
 
   get_user_nickname: (id)->
     user = User.find_where(id:id?.toLowerCase())
