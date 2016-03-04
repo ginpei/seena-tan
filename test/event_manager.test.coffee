@@ -122,7 +122,7 @@ describe 'EventManager', ->
           """]
         ]
 
-  context 'hubot event remove <id>', ->
+  context 'hubot event remove <starts_at> <name>', ->
     beforeEach ->
       room.robot.brain.set 'event_manager.events', JSON.stringify([
         { date:'2000-12-02 09:08', name:'Meet up' }
