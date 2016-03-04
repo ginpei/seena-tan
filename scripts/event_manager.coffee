@@ -84,7 +84,7 @@ class EventManager
       .map (event)->
         time = moment.tz(event.date, TZ)
           .locale('ja')
-          .format('MM-DD dd HH:mm')
+          .format('MM/DD dd HH:mm')
         "#{time} #{event.name}"
       .join('\n')
 
