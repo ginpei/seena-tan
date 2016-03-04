@@ -81,7 +81,11 @@ class EventManager
 
   make_list_message: (events)->
     events
-      .map((event)-> "#{moment.tz(event.date, TZ).locale('ja').format('MM-DD dd HH:mm')} #{event.name}")
+      .map (event)->
+        time = moment.tz(event.date, TZ)
+          .locale('ja')
+          .format('MM-DD dd HH:mm')
+        "#{time} #{event.name}"
       .join('\n')
 
   # @param {Strng} text `MM-DD HH:mm`
