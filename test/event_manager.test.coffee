@@ -63,7 +63,7 @@ describe 'EventManager', ->
         ])
         co ->
           yield room.user.say 'alice', '@hubot event add 12-2 19:30 Meet up'
-          yield room.user.say 'alice', '@hubot event add 1-2 火 9:8 New Year Party'
+          yield room.user.say 'alice', '@hubot event add 1/2 火 9:8 New Year Party'
 
       it 'registers a specified event as ordered', ->
         expect(room.messages).to.eql [
@@ -74,7 +74,7 @@ describe 'EventManager', ->
             12-02 土 19:30 Meet up
             12-13 水 12:59 Hiking
             """]
-          ['alice', '@hubot event add 1-2 火 9:8 New Year Party']
+          ['alice', '@hubot event add 1/2 火 9:8 New Year Party']
           ['hubot',
             """
             @alice New Year Party is successfully registered.
@@ -133,7 +133,7 @@ describe 'EventManager', ->
         yield room.user.say 'alice', '@hubot event remove 12-03 12:59 Hxking'
         yield room.user.say 'alice', '@hubot event remove 12-13 12:59 Hiking'
         yield room.user.say 'alice', '@hubot event remove 12-3 12:59 Hiking'
-        yield room.user.say 'alice', '@hubot event remove 01-02 火 19:00 New Year Party'
+        yield room.user.say 'alice', '@hubot event remove 01/02 火 19:00 New Year Party'
         yield room.user.say 'alice', '@hubot event list'
 
     it 'removes the specified event', ->
@@ -144,7 +144,7 @@ describe 'EventManager', ->
         ['hubot', '@alice Sorry, the event you specified is not found.']
         ['alice', '@hubot event remove 12-3 12:59 Hiking']
         ['hubot', '@alice Hiking is successfully removed.']
-        ['alice', '@hubot event remove 01-02 火 19:00 New Year Party']
+        ['alice', '@hubot event remove 01/02 火 19:00 New Year Party']
         ['hubot', '@alice New Year Party is successfully removed.']
         ['alice', '@hubot event list']
         ['hubot', """
