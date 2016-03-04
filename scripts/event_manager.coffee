@@ -77,7 +77,7 @@ class EventManager
     now = @now()
     events = JSON.parse(@brain.get('event_manager.events') or '[]')
       .map((e)-> e.date = moment.tz(e.date, TZ); e)
-      .filter((e)-> e.date > now)
+      .filter((e)-> e.date > now or e.date.isSame(now, 'day'))
 
   make_list_message: (events)->
     events

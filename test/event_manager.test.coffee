@@ -34,6 +34,8 @@ describe 'EventManager', ->
     beforeEach ->
       room.robot.brain.set 'event_manager.events', JSON.stringify([
         { date:'2000-11-30 12:00', name:'Lunch at Sugoi Sushi' }
+        { date:'2000-12-01 11:30', name:'Prepare Lunch' }
+        { date:'2000-12-01 12:30', name:'Lunch' }
         { date:'2000-12-02 09:08', name:'Meet up' }
         { date:'2000-12-13 12:59', name:'Hiking' }
         { date:'2001-01-02 19:00', name:'New Year Party' }
@@ -48,6 +50,8 @@ describe 'EventManager', ->
           'hubot',
           """
           @alice Events:
+          12/01 金 11:30 Prepare Lunch
+          12/01 金 12:30 Lunch
           12/02 土 09:08 Meet up
           12/13 水 12:59 Hiking
           01/02 火 19:00 New Year Party
