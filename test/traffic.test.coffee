@@ -12,31 +12,31 @@ describe 'Traffic', ->
 
   traffic_error = null
   result_ok = [
-    { title:'SkyTrain', status:'Operating normally.', effective:'Feb 27 2016 12:57:PM', fine:true }
-    { title:'Bus',      status:'Operating normally.', effective:'Feb 27 2016 12:57:PM', fine:true }
+    { title:'SkyTrain', outline:'Operating normally.', effective:'Feb 27 2016 12:57:PM', fine:true }
+    { title:'Bus',      outline:'Operating normally.', effective:'Feb 27 2016 12:57:PM', fine:true }
   ]
   result_ok2 = [
-    { title:'SkyTrain', status:'Operating normally.', effective:'Feb 27 2016 12:58:PM', fine:true }
-    { title:'Bus',      status:'Operating normally.', effective:'Feb 27 2016 12:58:PM', fine:true }
+    { title:'SkyTrain', outline:'Operating normally.', effective:'Feb 27 2016 12:58:PM', fine:true }
+    { title:'Bus',      outline:'Operating normally.', effective:'Feb 27 2016 12:58:PM', fine:true }
   ]
   result_ng_train = [
     {
       title: 'SkyTrain',
-      status: 'Something wrong.',
+      outline: 'Something wrong.',
       effective:'Feb 27 2016 12:57:PM',
       fine: false,
-      detail: 'Spider man is running on the rails.'
+      description: 'Spider man is running on the rails.'
     }
-    { title:'Bus', status:'Operating normally.', effective:'Feb 27 2016 12:57:PM', fine:true }
+    { title:'Bus', outline:'Operating normally.', effective:'Feb 27 2016 12:57:PM', fine:true }
   ]
   result_ng_bus = [
-    { title:'SkyTrain', status:'Operating normally.', effective:'Feb 27 2016 12:57:PM', fine:true }
+    { title:'SkyTrain', outline:'Operating normally.', effective:'Feb 27 2016 12:57:PM', fine:true }
     {
       title: 'Bus',
-      status: 'Something wrong.',
+      outline: 'Something wrong.',
       effective:'Feb 27 2016 12:57:PM',
       fine: false,
-      detail: 'Spider man is running on the rails.'
+      description: 'Spider man is running on the rails.'
     }
   ]
 
