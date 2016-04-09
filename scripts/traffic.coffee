@@ -64,7 +64,7 @@ class Traffic
     if data.fine
       "✔ #{data.title}"
     else
-      "✘ #{data.title} : [#{data.status}] #{data.detail}"
+      "✘ #{data.title} : #{data.description}"
 
   get_morning_message: (callback)->
     @translink_alerts (err, alerts)=>
