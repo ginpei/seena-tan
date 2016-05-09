@@ -6,9 +6,9 @@
 #   hubot house-cleaning user - Show the user list.
 #   hubot house-cleaning user add <name> - Add an user.
 #   hubot house-cleaning user remove <name> - Remove an user.
-#   hubot house-cleaning place - Show the place list.
-#   hubot house-cleaning place add <name> - Add a place.
-#   hubot house-cleaning place remove <name> - Remove a place.
+#   hubot house-cleaning location - Show the location list.
+#   hubot house-cleaning location add <name> - Add a location.
+#   hubot house-cleaning location remove <name> - Remove a location.
 #   hubot house-cleaning rand - Tell the new oracle.
 #   hubot house-cleaning latest - Tell the last oracle again.
 #   hubot 掃除当番更新して - 新しい神託を得る。
@@ -41,8 +41,8 @@ class Brain
 class User extends Brain
   @KEY: 'HouseCleaning.User'
 
-class Place extends Brain
-  @KEY: 'HouseCleaning.Place'
+class Location extends Brain
+  @KEY: 'HouseCleaning.Location'
 
 class HouseCleaning
   @KEY_ORACLE: 'HouseCleaning.latest_oracle'
@@ -66,13 +66,13 @@ class HouseCleaning
         name: res.match[1]
       @respond_on_user_add(res, attr)
 
-    robot.respond /house-cleaning place$/, (res)=>
-      @respond_on_place_list(res)
+    robot.respond /house-cleaning location$/, (res)=>
+      @respond_on_location_list(res)
 
-    robot.respond /house-cleaning place add (.*)$/, (res)=>
+    robot.respond /house-cleaning location add (.*)$/, (res)=>
       attr =
         name: res.match[1]
-      @respond_on_place_add(res, attr)
+      @respond_on_location_add(res, attr)
 
     robot.respond /house-cleaning rand$/, (res)=>
       @respond_on_rand(res)
@@ -91,9 +91,9 @@ class HouseCleaning
       .map((user)->"- #{user.name}")
       .join('\n')
 
-  make_place_list: ()->
-    Place.all()
-      .map((place)->"- #{place.name}")
+  make_location_list: ()->
+    Location.all()
+      .map((location)->"- #{location.name}")
       .join('\n')
 
   save_oracle: (content)->
@@ -118,22 +118,22 @@ class HouseCleaning
   respond_on_usage: (res)->
     res.reply @constructor.MSG_USAGE
 
-  respond_on_place_list: (res)->
-    message = "Places:\n#{@make_place_list()}"
+  respond_on_location_list: (res)->
+    message = "Locations:\n#{@make_location_list()}"
     res.reply message
 
-  respond_on_place_add: (res, attr)->
-    place = new Place(attr)
-    place.save()
-    message = "#{place.name} is successfully added.\n#{@make_place_list()}"
+  respond_on_location_add: (res, attr)->
+    location = new Location(attr)
+    location.save()
+    message = "#{location.name} is successfully added.\n#{@make_location_list()}"
     res.reply message
 
   respond_on_rand: (res)->
     users = User.all()
-    places = Place.shuffle()
+    locations = Location.shuffle()
 
     oracle = users
-      .map((user, index)-> "- #{user.name} = #{places[index].name}")
+      .map((user, index)-> "- #{user.name} = #{locations[index].name}")
       .join('\n')
 
     @save_oracle(oracle)
@@ -147,11 +147,11 @@ class HouseCleaning
     res.reply message
 
 HouseCleaning.User = User
-HouseCleaning.Place = Place
+HouseCleaning.Location = Location
 
 module.exports = (robot)->
   User.set_brain(robot.brain)
-  Place.set_brain(robot.brain)
+  Location.set_brain(robot.brain)
   house_cleaning = new HouseCleaning()
   house_cleaning.start(robot)
 
