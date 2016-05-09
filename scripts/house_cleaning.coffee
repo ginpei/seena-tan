@@ -26,6 +26,9 @@ class Brain
     all.push(@)
     constructor.save(all)
 
+  delete: ()->
+    @constructor.delete(@)
+
   @set_brain: (brain)->
     @brain = brain
 
@@ -34,6 +37,12 @@ class Brain
 
   @save: (users)->
     @brain.set(@KEY, JSON.stringify(users))
+
+  @delete: (item)->
+    all = @all()
+    index = all.indexOf(item)
+    all.splice(index, 1)
+    @save(all)
 
   @shuffle: ()->
     _.shuffle(@all())
@@ -66,6 +75,11 @@ class HouseCleaning
         name: res.match[1]
       @respond_on_user_add(res, attr)
 
+    robot.respond /house-cleaning user remove (.*)$/, (res)=>
+      attr =
+        name: res.match[1]
+      @respond_on_user_remove(res, attr)
+
     robot.respond /house-cleaning location$/, (res)=>
       @respond_on_location_list(res)
 
@@ -73,6 +87,11 @@ class HouseCleaning
       attr =
         name: res.match[1]
       @respond_on_location_add(res, attr)
+
+    robot.respond /house-cleaning location remove (.*)$/, (res)=>
+      attr =
+        name: res.match[1]
+      @respond_on_location_remove(res, attr)
 
     robot.respond /house-cleaning rand$/, (res)=>
       @respond_on_rand(res)
@@ -115,6 +134,12 @@ class HouseCleaning
     message = "#{user.name} is successfully added.\n#{@make_user_list()}"
     res.reply message
 
+  respond_on_user_remove: (res, attr)->
+    user = new User(attr)
+    user.delete()
+    message = "#{user.name} is successfully removed.\n#{@make_user_list()}"
+    res.reply message
+
   respond_on_usage: (res)->
     res.reply @constructor.MSG_USAGE
 
@@ -126,6 +151,12 @@ class HouseCleaning
     location = new Location(attr)
     location.save()
     message = "#{location.name} is successfully added.\n#{@make_location_list()}"
+    res.reply message
+
+  respond_on_location_remove: (res, attr)->
+    location = new Location(attr)
+    location.delete()
+    message = "#{location.name} is successfully removed.\n#{@make_location_list()}"
     res.reply message
 
   respond_on_rand: (res)->

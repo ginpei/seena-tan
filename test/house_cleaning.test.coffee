@@ -78,6 +78,31 @@ describe 'HouseCleaning', ->
         """ ]
       ]
 
+  context 'hubot house-cleaning user remove <user-name>', ->
+    beforeEach ->
+      room.robot.brain.set 'HouseCleaning.User', JSON.stringify([
+        { name:'Alice' }
+        { name:'Bob' }
+        { name:'Carol' }
+        { name:'Eve' }
+        { name:'Dan Cou Ga' }
+      ])
+
+      co ->
+        yield room.user.say 'alice', '@hubot house-cleaning user remove Dan Cou Ga'
+
+    it 'remove the new user', ->
+      expect(room.messages).to.eql [
+        ['alice', '@hubot house-cleaning user remove Dan Cou Ga']
+        ['hubot', """
+          @alice Dan Cou Ga is successfully removed.
+          - Alice
+          - Bob
+          - Carol
+          - Eve
+        """ ]
+      ]
+
   context 'hubot house-cleaning location', ->
     beforeEach ->
       co ->
@@ -110,6 +135,31 @@ describe 'HouseCleaning', ->
           - Kitchen 1
           - Kitchen 2
           - Centre of the Earth
+        """ ]
+      ]
+
+  context 'hubot house-cleaning location remove <location-name>', ->
+    beforeEach ->
+      room.robot.brain.set 'HouseCleaning.Location', JSON.stringify([
+        { name:'Bathroom' }
+        { name:'Entrance' }
+        { name:'Kitchen 1' }
+        { name:'Kitchen 2' }
+        { name:'Centre of the Earth' }
+      ])
+
+      co ->
+        yield room.user.say 'alice', '@hubot house-cleaning location remove Centre of the Earth'
+
+    it 'removes the new location', ->
+      expect(room.messages).to.eql [
+        ['alice', '@hubot house-cleaning location remove Centre of the Earth']
+        ['hubot', """
+          @alice Centre of the Earth is successfully removed.
+          - Bathroom
+          - Entrance
+          - Kitchen 1
+          - Kitchen 2
         """ ]
       ]
 
