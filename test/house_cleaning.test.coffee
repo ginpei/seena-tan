@@ -21,7 +21,7 @@ describe 'HouseCleaning', ->
       { name:'Carol' }
       { name:'Eve' }
     ])
-    room.robot.brain.set 'HouseCleaning.Place', JSON.stringify([
+    room.robot.brain.set 'HouseCleaning.Location', JSON.stringify([
       { name:'Bathroom' }
       { name:'Entrance' }
       { name:'Kitchen 1' }
@@ -78,16 +78,41 @@ describe 'HouseCleaning', ->
         """ ]
       ]
 
-  context 'hubot house-cleaning place', ->
+  context 'hubot house-cleaning user remove <user-name>', ->
+    beforeEach ->
+      room.robot.brain.set 'HouseCleaning.User', JSON.stringify([
+        { name:'Alice' }
+        { name:'Bob' }
+        { name:'Carol' }
+        { name:'Eve' }
+        { name:'Dan Cou Ga' }
+      ])
+
+      co ->
+        yield room.user.say 'alice', '@hubot house-cleaning user remove Dan Cou Ga'
+
+    it 'remove the new user', ->
+      expect(room.messages).to.eql [
+        ['alice', '@hubot house-cleaning user remove Dan Cou Ga']
+        ['hubot', """
+          @alice Dan Cou Ga is successfully removed.
+          - Alice
+          - Bob
+          - Carol
+          - Eve
+        """ ]
+      ]
+
+  context 'hubot house-cleaning location', ->
     beforeEach ->
       co ->
-        yield room.user.say 'alice', '@hubot house-cleaning place'
+        yield room.user.say 'alice', '@hubot house-cleaning location'
 
-    it 'shows place names', ->
+    it 'shows location names', ->
       expect(room.messages).to.eql [
-        ['alice', '@hubot house-cleaning place']
+        ['alice', '@hubot house-cleaning location']
         ['hubot', """
-          @alice Places:
+          @alice Locations:
           - Bathroom
           - Entrance
           - Kitchen 1
@@ -95,14 +120,14 @@ describe 'HouseCleaning', ->
         """ ]
       ]
 
-  context 'hubot house-cleaning place add <place-name>', ->
+  context 'hubot house-cleaning location add <location-name>', ->
     beforeEach ->
       co ->
-        yield room.user.say 'alice', '@hubot house-cleaning place add Centre of the Earth'
+        yield room.user.say 'alice', '@hubot house-cleaning location add Centre of the Earth'
 
-    it 'adds the new place', ->
+    it 'adds the new location', ->
       expect(room.messages).to.eql [
-        ['alice', '@hubot house-cleaning place add Centre of the Earth']
+        ['alice', '@hubot house-cleaning location add Centre of the Earth']
         ['hubot', """
           @alice Centre of the Earth is successfully added.
           - Bathroom
@@ -113,19 +138,44 @@ describe 'HouseCleaning', ->
         """ ]
       ]
 
+  context 'hubot house-cleaning location remove <location-name>', ->
+    beforeEach ->
+      room.robot.brain.set 'HouseCleaning.Location', JSON.stringify([
+        { name:'Bathroom' }
+        { name:'Entrance' }
+        { name:'Kitchen 1' }
+        { name:'Kitchen 2' }
+        { name:'Centre of the Earth' }
+      ])
+
+      co ->
+        yield room.user.say 'alice', '@hubot house-cleaning location remove Centre of the Earth'
+
+    it 'removes the new location', ->
+      expect(room.messages).to.eql [
+        ['alice', '@hubot house-cleaning location remove Centre of the Earth']
+        ['hubot', """
+          @alice Centre of the Earth is successfully removed.
+          - Bathroom
+          - Entrance
+          - Kitchen 1
+          - Kitchen 2
+        """ ]
+      ]
+
   context 'oracle', ->
     beforeEach ->
-      sinon.stub HouseCleaning.Place, 'shuffle', ()-> @all().reverse()
+      sinon.stub HouseCleaning.Location, 'shuffle', ()-> @all().reverse()
 
     afterEach ->
-      HouseCleaning.Place.shuffle.restore()
+      HouseCleaning.Location.shuffle.restore()
 
     context 'hubot house-cleaning rand', ->
       beforeEach ->
         co ->
           yield room.user.say 'alice', '@hubot house-cleaning rand'
 
-      it 'adds the new place', ->
+      it 'adds the new location', ->
         expect(room.messages).to.eql [
           ['alice', '@hubot house-cleaning rand']
           ['hubot', """
@@ -143,7 +193,7 @@ describe 'HouseCleaning', ->
           yield room.user.say 'alice', '@hubot 掃除当番更新'
           yield room.user.say 'alice', '@hubot 掃除当番を更新して'
 
-      it 'adds the new place', ->
+      it 'adds the new location', ->
         expect(room.messages).to.eql [
           ['alice', '@hubot 掃除当番更新']
           ['hubot', """
@@ -169,7 +219,7 @@ describe 'HouseCleaning', ->
           yield room.user.say 'alice', '@hubot house-cleaning rand'
           yield room.user.say 'alice', '@hubot house-cleaning latest'
 
-      it 'adds the new place', ->
+      it 'adds the new location', ->
         expect(room.messages).to.eql [
           ['alice', '@hubot house-cleaning rand']
           ['hubot', """
@@ -198,7 +248,7 @@ describe 'HouseCleaning', ->
           yield room.user.say 'alice', '@hubot 私の掃除当番は何ですか'
           yield room.user.say 'alice', '@hubot あのう、掃除当番なんでしたっけ……'
 
-      it 'adds the new place', ->
+      it 'adds the new location', ->
         oracle = """
           @alice Here's the oracle.
           - Alice = Kitchen 2
