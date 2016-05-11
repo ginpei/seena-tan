@@ -40,9 +40,17 @@ class Brain
 
   @delete: (item)->
     all = @all()
-    index = all.indexOf(item)
-    all.splice(index, 1)
-    @save(all)
+    index = @_indexOf(item)
+    if index >= 0
+      all.splice(index, 1)
+      @save(all)
+
+  @_indexOf: (target)->
+    index = -1
+    @all().find (item, i)=>
+      if (Object.keys(target).every (key)=> target[key] is item[key])
+        index = i
+    index
 
   @shuffle: ()->
     _.shuffle(@all())

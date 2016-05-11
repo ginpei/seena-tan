@@ -90,6 +90,7 @@ describe 'HouseCleaning', ->
 
       co ->
         yield room.user.say 'alice', '@hubot house-cleaning user remove Dan Cou Ga'
+        yield room.user.say 'alice', '@hubot house-cleaning user remove Carol'
 
     it 'remove the new user', ->
       expect(room.messages).to.eql [
@@ -99,6 +100,13 @@ describe 'HouseCleaning', ->
           - Alice
           - Bob
           - Carol
+          - Eve
+        """ ]
+        ['alice', '@hubot house-cleaning user remove Carol']
+        ['hubot', """
+          @alice Carol is successfully removed.
+          - Alice
+          - Bob
           - Eve
         """ ]
       ]
