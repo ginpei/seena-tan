@@ -37,6 +37,11 @@ class EventManager
       date = @parse_time(datetime)
       @respond_on_remove(res, { date, name })
 
+    robot.respond /イベント/, (res)=>
+      events = @get_current_events()
+      message = "こんな感じよー:\n#{@make_list_message(events)}"
+      res.reply message
+
     robot.respond /--debug-event-morning/, (res)=>
       message = @constructor.get_morning_message(@brain)
       res.send message
