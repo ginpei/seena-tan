@@ -157,6 +157,29 @@ describe 'EventManager', ->
         """]
       ]
 
+  context 'hubot イベント', ->
+    beforeEach ->
+      room.robot.brain.set 'event_manager.events', JSON.stringify([
+        { date:'2000-12-01 12:30', name:'巣鯉寿司で昼食 🍣' }
+        { date:'2000-12-02 09:08', name:'ミートアップ' }
+        { date:'2001-01-02 19:00', name:'パーティ' }
+      ])
+      co ->
+        yield room.user.say 'alice', '@hubot イベントどうなってるの？'
+
+    it 'shows the list of events', ->
+      expect(room.messages).to.eql [
+        ['alice', '@hubot イベントどうなってるの？']
+        [
+          'hubot',
+          """
+          @alice こんな感じよー:
+          12/01 金 12:30 巣鯉寿司で昼食 🍣
+          12/02 土 09:08 ミートアップ
+          01/02 火 19:00 パーティ
+          """
+        ]
+      ]
   context 'get_morning_message', ->
     context 'some', ->
       message = null
