@@ -1,5 +1,6 @@
 # Description:
 #   Reset the table when finds a reversed table.
+#   https://twitter.com/mipearson/status/735306904642199552
 
 class ResetTable
   delay: 3000
