@@ -157,6 +157,37 @@ describe 'EventManager', ->
         """]
       ]
 
+  context 'hubot event delete <starts_at> <name>', ->
+    beforeEach ->
+      room.robot.brain.set 'event_manager.events', JSON.stringify([
+        { date:'2000-12-02 09:08', name:'Meet up' }
+        { date:'2000-12-03 12:59', name:'Hiking' }
+        { date:'2001-01-02 19:00', name:'New Year Party' }
+      ])
+      co ->
+        yield room.user.say 'alice', '@hubot event delete 12-03 12:59 Hxking'
+        yield room.user.say 'alice', '@hubot event delete 12-13 12:59 Hiking'
+        yield room.user.say 'alice', '@hubot event delete 12-3 12:59 Hiking'
+        yield room.user.say 'alice', '@hubot event delete 01/02 火 19:00 New Year Party'
+        yield room.user.say 'alice', '@hubot event list'
+
+    it 'deletes the specified event', ->
+      expect(room.messages).to.eql [
+        ['alice', '@hubot event delete 12-03 12:59 Hxking']
+        ['hubot', '@alice Sorry, the event you specified is not found.']
+        ['alice', '@hubot event delete 12-13 12:59 Hiking']
+        ['hubot', '@alice Sorry, the event you specified is not found.']
+        ['alice', '@hubot event delete 12-3 12:59 Hiking']
+        ['hubot', '@alice Hiking is successfully removed.']
+        ['alice', '@hubot event delete 01/02 火 19:00 New Year Party']
+        ['hubot', '@alice New Year Party is successfully removed.']
+        ['alice', '@hubot event list']
+        ['hubot', """
+          @alice Events:
+          12/02 土 09:08 Meet up
+        """]
+      ]
+
   context 'hubot イベント', ->
     beforeEach ->
       room.robot.brain.set 'event_manager.events', JSON.stringify([

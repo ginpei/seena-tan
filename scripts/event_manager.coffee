@@ -32,7 +32,7 @@ class EventManager
       [none, datetime, name] = res.match
       @respond_on_add(res, { datetime, name })
 
-    robot.respond /event remove (\d{1,2}[-/]\d{1,2} (?:. )?\d{1,2}:\d{1,2}) (.*)/, (res)=>
+    robot.respond /event (?:remove|delete) (\d{1,2}[-/]\d{1,2} (?:. )?\d{1,2}:\d{1,2}) (.*)/, (res)=>
       [none, datetime, name] = res.match
       date = @parse_time(datetime)
       @respond_on_remove(res, { date, name })
