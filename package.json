@@ -19,7 +19,7 @@
     "hubot-rules": "^0.1.1",
     "hubot-scripts": "^2.16.2",
     "hubot-shipit": "^0.2.0",
-    "hubot-slack": "^3.4.2",
+    "hubot-slack": "^4.0.0",
     "moment-timezone": "^0.5.0",
     "translink-alerts": "github:ginpei/translink-alerts#acae265e5cf6d023d661577b85b7f75aa626ed86",
     "underscore": "^1.8.3"
