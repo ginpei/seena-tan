@@ -36,7 +36,7 @@ class Morning
   ]
 
   constructor: (options)->
-    @channel = 'random'
+    @channel = 'random-1'
     # @cronTime = '*/15 * * * * *'
     @cronTime = '0 30 7 * * *'
     @timezone = process.env.TZ
