@@ -85,7 +85,7 @@ class Morning
   get_traffic: (callback)->
     Traffic.get_morning_message callback
 
-  @first_channel: 'seena_tan'
+  @first_channel: process.env.HUBOT_DEV_CHANNEL
 
   @say_good_morning: (robot)->
     message = _.sample(Morning.morning_messages)
