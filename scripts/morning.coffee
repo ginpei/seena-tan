@@ -36,7 +36,7 @@ class Morning
   ]
 
   constructor: (options)->
-    @channel = 'random-1'
+    @channel = process.env.HUBOT_DAILY_CHANNEL
     # @cronTime = '*/15 * * * * *'
     @cronTime = '0 30 7 * * *'
     @timezone = process.env.TZ

@@ -15,7 +15,7 @@ class Traffic
   official_url: 'http://www.translink.ca/en/Schedules-and-Maps/Alerts.aspx'
 
   constructor: (options)->
-    @channel = 'random-1'
+    @channel = process.env.HUBOT_DAILY_CHANNEL
     @cronTime = '0 */6 * * * *'
     @timezone = process.env.TZ
 
