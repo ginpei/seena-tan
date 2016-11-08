@@ -36,7 +36,7 @@ class Morning
   ]
 
   constructor: (options)->
-    @channel = 'random-1'
+    @channel = process.env.HUBOT_CHANNEL_DAILY
     # @cronTime = '*/15 * * * * *'
     @cronTime = '0 30 7 * * *'
     @timezone = process.env.TZ
@@ -85,7 +85,7 @@ class Morning
   get_traffic: (callback)->
     Traffic.get_morning_message callback
 
-  @first_channel: 'seena_tan'
+  @first_channel: process.env.HUBOT_CHANNEL_DEV
 
   @say_good_morning: (robot)->
     message = _.sample(Morning.morning_messages)
