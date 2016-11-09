@@ -10,9 +10,9 @@ describe 'CurrencyRate', ->
   room = null
   helper = new Helper(PATH)
 
-  result_ng_invalid_base = {"error":"Invalid base"}
-  result_ok = {"base":"CAD","date":"2000-01-21","rates":{"JPY":72.246}}
-  result_ok_empty = {"base":"CAD","date":"2000-01-21","rates":{}}
+  result_ng_invalid_base = '{"error":"Invalid base"}'
+  result_ok = '{"base":"CAD","date":"2000-01-21","rates":{"JPY":72.246}}'
+  result_ok_empty = '{"base":"CAD","date":"2000-01-21","rates":{}}'
 
   # from script/Traffic.coffee
   waitForMessagesToBe = (done, expected)->
@@ -33,9 +33,9 @@ describe 'CurrencyRate', ->
   context 'currency command', ->
     context 'CAD JPY', ->
       beforeEach ->
-        sinon.stub CurrencyRate.prototype, 'fetch', (base, symbol, callback)->
+        sinon.stub CurrencyRate.prototype, 'http_get', (url, callback)->
           setTimeout ->
-            callback(null, result_ok)
+            callback({ statusCode: 200 }, result_ok)
           , 20
 
         co ->
@@ -43,7 +43,7 @@ describe 'CurrencyRate', ->
           yield room.user.say 'alice', '@hubot currency CAD JPY'
 
       afterEach ->
-        CurrencyRate.prototype.fetch.restore()
+        CurrencyRate.prototype.http_get.restore()
 
       it 'shows the result', (done)->
         waitForMessagesToBe done, [
@@ -54,9 +54,9 @@ describe 'CurrencyRate', ->
 
     context 'CAD XXX', ->
       beforeEach ->
-        sinon.stub CurrencyRate.prototype, 'fetch', (base, symbol, callback)->
+        sinon.stub CurrencyRate.prototype, 'http_get', (url, callback)->
           setTimeout ->
-            callback(null, result_ok_empty)
+            callback({ statusCode: 200 }, result_ok_empty)
           , 20
 
         co ->
@@ -64,7 +64,7 @@ describe 'CurrencyRate', ->
           yield room.user.say 'alice', '@hubot currency CAD XXX'
 
       afterEach ->
-        CurrencyRate.prototype.fetch.restore()
+        CurrencyRate.prototype.http_get.restore()
 
       it 'shows an error message', (done)->
         waitForMessagesToBe done, [
@@ -75,9 +75,9 @@ describe 'CurrencyRate', ->
 
     context 'XXX JPY', ->
       beforeEach ->
-        sinon.stub CurrencyRate.prototype, 'fetch', (base, symbol, callback)->
+        sinon.stub CurrencyRate.prototype, 'http_get', (url, callback)->
           setTimeout ->
-            callback(new Error('422'), result_ng_invalid_base)
+            callback({ statusCode: 422 }, result_ng_invalid_base)
           , 20
 
         co ->
@@ -85,7 +85,7 @@ describe 'CurrencyRate', ->
           yield room.user.say 'alice', '@hubot currency XXX JPY'
 
       afterEach ->
-        CurrencyRate.prototype.fetch.restore()
+        CurrencyRate.prototype.http_get.restore()
 
       it 'shows an error message', (done)->
         waitForMessagesToBe done, [

@@ -20,28 +20,27 @@ class CurrencyRate
       symbol = res.match[2].toUpperCase()
 
       res.send 'んーどうかな'
-      @fetch base, symbol, (err, data)=>
-        if err
+      @fetch base, symbol, (message)=>
+        unless message
           message = 'ごめん、えらった。'
-        else
-          message = @make_message(data)
         res.reply message
 
   fetch: (base, symbol, callback)->
     url = @get_fetch_url(base, symbol)
-    http.get url, (res)=>
+    @http_get url, (res, responseText)=>
       if res.statusCode is 200
-        responseText = ''
-        res.on 'responseText', (v)->responseText+=v
-        res.on 'end', ()->
-          try
-            data = JSON.parse(responseText)
-            callback(null, data)
-          catch error
-            callback(error, null)
-      else
-        error = new Error("#{res.statusCode} ")
-        callback(error, null)
+        try
+          data = JSON.parse(responseText)
+          message = @make_message(data)
+        catch error
+      callback(message)
+
+  http_get: (url, callback)->
+    http.get url, (res)=>
+      responseText = ''
+      res.on 'responseText', (v)->responseText+=v
+      res.on 'end', ()->
+        callback(res, responseText)
 
   get_fetch_url: (base, symbol)->
     "#{@api_end_point}?base=#{base}&symbols=#{symbol}"
