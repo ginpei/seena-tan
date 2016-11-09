@@ -10,7 +10,7 @@ describe 'CurrencyRate', ->
   room = null
   helper = new Helper(PATH)
 
-  result_ng_old = {"error":"Date too old"}
+  result_ng_invalid_base = {"error":"Invalid base"}
   result_ok = {"base":"CAD","date":"2000-01-21","rates":{"JPY":72.246}}
   result_ok_empty = {"base":"CAD","date":"2000-01-21","rates":{}}
 
@@ -71,4 +71,25 @@ describe 'CurrencyRate', ->
           ['alice', '@hubot currency CAD JPX']
           ['hubot', 'んーどうかな']
           ['hubot', '@alice そういうのないみたい']
+        ]
+
+    context 'CAX JPY', ->
+      beforeEach ->
+        sinon.stub CurrencyRate.prototype, 'fetch', (base, symbol, callback)->
+          setTimeout ->
+            callback(new Error('422'), result_ng_invalid_base)
+          , 20
+
+        co ->
+          currency_rate_error = null
+          yield room.user.say 'alice', '@hubot currency CAX JPY'
+
+      afterEach ->
+        CurrencyRate.prototype.fetch.restore()
+
+      it 'shows an error message', (done)->
+        waitForMessagesToBe done, [
+          ['alice', '@hubot currency CAX JPY']
+          ['hubot', 'んーどうかな']
+          ['hubot', '@alice ごめん、えらった。']
         ]

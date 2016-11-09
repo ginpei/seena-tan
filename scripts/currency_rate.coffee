@@ -23,9 +23,9 @@ class CurrencyRate
       @fetch base, symbol, (err, data)=>
         if err
           message = 'ごめん、えらった。'
-          throw err
         else
-          res.reply @make_message(data)
+          message = @make_message(data)
+        res.reply message
 
   fetch: (base, symbol, callback)->
     url = @get_fetch_url(base, symbol)
