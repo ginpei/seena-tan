@@ -93,3 +93,15 @@ describe 'CurrencyRate', ->
           ['hubot', 'んーどうかな']
           ['hubot', '@alice ごめん、えらった。']
         ]
+
+  context 'CurrencyRate.fetch()', ->
+    beforeEach ->
+      sinon.stub CurrencyRate.prototype, 'http_get', (url, callback)->
+        setTimeout ->
+          callback({ statusCode: 200 }, result_ok)
+        , 20
+
+    it 'returns the result', (done)->
+      CurrencyRate.fetch 'CAD', 'JPY', (message)->
+        expect(message).to.eql '1 CAD = 72.246 JPY'
+        done()
