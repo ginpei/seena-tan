@@ -52,7 +52,7 @@ describe 'CurrencyRate', ->
           ['hubot', '@alice 1 CAD = 72.246 JPY']
         ]
 
-    context 'CAD JPX', ->
+    context 'CAD XXX', ->
       beforeEach ->
         sinon.stub CurrencyRate.prototype, 'fetch', (base, symbol, callback)->
           setTimeout ->
@@ -61,19 +61,19 @@ describe 'CurrencyRate', ->
 
         co ->
           currency_rate_error = null
-          yield room.user.say 'alice', '@hubot currency CAD JPX'
+          yield room.user.say 'alice', '@hubot currency CAD XXX'
 
       afterEach ->
         CurrencyRate.prototype.fetch.restore()
 
       it 'shows an error message', (done)->
         waitForMessagesToBe done, [
-          ['alice', '@hubot currency CAD JPX']
+          ['alice', '@hubot currency CAD XXX']
           ['hubot', 'んーどうかな']
           ['hubot', '@alice そういうのないみたい']
         ]
 
-    context 'CAX JPY', ->
+    context 'XXX JPY', ->
       beforeEach ->
         sinon.stub CurrencyRate.prototype, 'fetch', (base, symbol, callback)->
           setTimeout ->
@@ -82,14 +82,14 @@ describe 'CurrencyRate', ->
 
         co ->
           currency_rate_error = null
-          yield room.user.say 'alice', '@hubot currency CAX JPY'
+          yield room.user.say 'alice', '@hubot currency XXX JPY'
 
       afterEach ->
         CurrencyRate.prototype.fetch.restore()
 
       it 'shows an error message', (done)->
         waitForMessagesToBe done, [
-          ['alice', '@hubot currency CAX JPY']
+          ['alice', '@hubot currency XXX JPY']
           ['hubot', 'んーどうかな']
           ['hubot', '@alice ごめん、えらった。']
         ]
