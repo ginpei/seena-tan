@@ -37,7 +37,7 @@ class CurrencyRate
   http_get: (url, callback)->
     http.get url, (res)=>
       responseText = ''
-      res.on 'responseText', (v)->responseText+=v
+      res.on 'data', (v)->responseText+=v
       res.on 'end', ()->
         callback(res, responseText)
 
