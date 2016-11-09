@@ -21,8 +21,7 @@ class CurrencyRate
 
       res.send 'んーどうかな'
       @fetch base, symbol, (message)=>
-        unless message
-          message = 'ごめん、えらった。'
+        message = 'ごめん、えらった。' unless message
         res.reply message
 
   fetch: (base, symbol, callback)->
