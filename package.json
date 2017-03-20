@@ -38,6 +38,6 @@
     "coffee-script": "^1.10.0",
     "hubot-test-helper": "^1.4.4",
     "mocha": "^3.1.0",
-    "sinon": "^1.17.3"
+    "sinon": "^2.1.0"
   }
 }
