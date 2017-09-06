@@ -21,7 +21,7 @@
     "hubot-shipit": "^0.2.0",
     "hubot-slack": "^4.0.0",
     "moment-timezone": "^0.5.0",
-    "translink-alerts": "github:ginpei/translink-alerts#acae265e5cf6d023d661577b85b7f75aa626ed86",
+    "translink-alerts": "github:ginpei/translink-alerts#7d1f65e6d322fabeaa266ef8c5f15d8e1b284bf8",
     "underscore": "^1.8.3"
   },
   "engines": {
