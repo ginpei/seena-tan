@@ -33,10 +33,11 @@ describe 'CurrencyRate', ->
   context 'currency command', ->
     context 'CAD JPY', ->
       beforeEach ->
-        sinon.stub CurrencyRate.prototype, 'http_get', (url, callback)->
-          setTimeout ->
-            callback({ statusCode: 200 }, result_ok)
-          , 20
+        sinon.stub(CurrencyRate.prototype, 'http_get')
+          .callsFake (url, callback)->
+            setTimeout ->
+              callback({ statusCode: 200 }, result_ok)
+            , 20
 
         co ->
           currency_rate_error = null
@@ -54,10 +55,11 @@ describe 'CurrencyRate', ->
 
     context 'CAD XXX', ->
       beforeEach ->
-        sinon.stub CurrencyRate.prototype, 'http_get', (url, callback)->
-          setTimeout ->
-            callback({ statusCode: 200 }, result_ok_empty)
-          , 20
+        sinon.stub(CurrencyRate.prototype, 'http_get')
+          .callsFake (url, callback)->
+             setTimeout ->
+               callback({ statusCode: 200 }, result_ok_empty)
+             , 20
 
         co ->
           currency_rate_error = null
@@ -75,10 +77,11 @@ describe 'CurrencyRate', ->
 
     context 'XXX JPY', ->
       beforeEach ->
-        sinon.stub CurrencyRate.prototype, 'http_get', (url, callback)->
-          setTimeout ->
-            callback({ statusCode: 422 }, result_ng_invalid_base)
-          , 20
+        sinon.stub(CurrencyRate.prototype, 'http_get')
+          .callsFake (url, callback)->
+             setTimeout ->
+               callback({ statusCode: 422 }, result_ng_invalid_base)
+             , 20
 
         co ->
           currency_rate_error = null
@@ -96,10 +99,11 @@ describe 'CurrencyRate', ->
 
   context 'CurrencyRate.fetch()', ->
     beforeEach ->
-      sinon.stub CurrencyRate.prototype, 'http_get', (url, callback)->
-        setTimeout ->
-          callback({ statusCode: 200 }, result_ok)
-        , 20
+      sinon.stub(CurrencyRate.prototype, 'http_get')
+        .callsFake (url, callback)->
+          setTimeout ->
+            callback({ statusCode: 200 }, result_ok)
+          , 20
 
     it 'returns the result', (done)->
       CurrencyRate.fetch 'CAD', 'JPY', (message)->

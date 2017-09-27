@@ -12,7 +12,8 @@ describe 'EventManager', ->
   helper = new Helper(PATH)
 
   beforeEach ->
-    sinon.stub EventManager.prototype, 'now', ()-> moment.tz('2000-12-01 12:00', process.env.TZ)
+    sinon.stub(EventManager.prototype, 'now')
+      .callsFake ()-> moment.tz('2000-12-01 12:00', process.env.TZ)
     room = helper.createRoom()
 
   afterEach ->
