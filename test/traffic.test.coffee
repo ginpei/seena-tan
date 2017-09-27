@@ -51,18 +51,19 @@ describe 'Traffic', ->
       , 10
 
   beforeEach ->
-    sinon.stub Traffic.prototype, 'translink_alerts', (callback)->
-      setTimeout ->
-        if traffic_error is 'train'
-          result = result_ng_train
-        else if traffic_error is 'bus'
-          result = result_ng_bus
-        else if traffic_error is 'ok2'
-          result = result_ok2
-        else
-          result = result_ok
-        callback(null, result)
-      , 20
+    sinon.stub(Traffic.prototype, 'translink_alerts')
+      .callsFake (callback)->
+        setTimeout ->
+          if traffic_error is 'train'
+            result = result_ng_train
+          else if traffic_error is 'bus'
+            result = result_ng_bus
+          else if traffic_error is 'ok2'
+            result = result_ok2
+          else
+            result = result_ok
+          callback(null, result)
+        , 20
     room = helper.createRoom()
 
   afterEach ->

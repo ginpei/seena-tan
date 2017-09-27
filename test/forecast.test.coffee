@@ -22,10 +22,11 @@ describe 'Forecast', ->
       , 10
 
   beforeEach ->
-    sinon.stub Forecast, 'get', (options)->
-      setTimeout ->
-        options.onsuccess(test_data)
-      , 20
+    sinon.stub(Forecast, 'get')
+      .callsFake (options)->
+        setTimeout ->
+          options.onsuccess(test_data)
+        , 20
     room = helper.createRoom()
 
   afterEach ->

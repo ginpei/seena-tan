@@ -14,7 +14,8 @@ describe 'Timer', ->
   helper = new Helper(PATH)
 
   beforeEach ->
-    sinon.stub Timer.prototype, 'now', ()-> moment.tz('2000-01-01T12:00:00', process.env.TZ).locale('ja')
+    sinon.stub(Timer.prototype, 'now')
+      .callsFake ()-> moment.tz('2000-01-01T12:00:00', process.env.TZ).locale('ja')
     room = helper.createRoom()
 
   afterEach ->

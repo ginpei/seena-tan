@@ -12,7 +12,8 @@ describe 'HouseCleaning', ->
   helper = new Helper(PATH)
 
   beforeEach ->
-    # sinon.stub HouseCleaning.prototype, 'now', ()-> moment.tz('2000-12-01 12:00', process.env.TZ)
+    # sinon.stub(HouseCleaning.prototype, 'now')
+    #   .callsFake ()-> moment.tz('2000-12-01 12:00', process.env.TZ)
     room = helper.createRoom()
 
     room.robot.brain.set 'HouseCleaning.User', JSON.stringify([
@@ -173,7 +174,8 @@ describe 'HouseCleaning', ->
 
   context 'oracle', ->
     beforeEach ->
-      sinon.stub HouseCleaning.Location, 'shuffle', ()-> @all().reverse()
+      sinon.stub(HouseCleaning.Location, 'shuffle')
+        .callsFake ()-> @all().reverse()
 
     afterEach ->
       HouseCleaning.Location.shuffle.restore()
