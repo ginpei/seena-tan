@@ -33,6 +33,11 @@ describe 'Forecast', ->
     room.destroy()
     Forecast.get.restore()
 
+  # These tests stand on this location.
+  # You need to update expectations when you change the location.
+  it 'requires TZ=America/Vancouver', ->
+    expect(process.env.TZ).to.eql 'America/Vancouver'
+
   context 'ざっくりとした天気', ->
     reply_text =
       """
