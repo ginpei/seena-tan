@@ -29,8 +29,8 @@
   },
   "scripts": {
     "logs": "heroku logs -a seena-tan",
-    "start": "bin/env && bin/hubot",
-    "test": "bin/env && mocha --compilers coffee:coffee-script/register"
+    "start": "bin/hubot",
+    "test": "mocha --compilers coffee:coffee-script/register"
   },
   "devDependencies": {
     "chai": "^3.5.0",

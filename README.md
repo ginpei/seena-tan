@@ -9,5 +9,17 @@ git clone git@github.com:ginpei/seena-tan.git
 cd seena-tan
 cp bin/env.example bin/env
 chmod u+x bin/env
-npm start
+bin/env && npm start
+```
+
+# Test
+
+```console
+bin/env && npm test
+```
+
+## Filtering
+
+```console
+bin/env && npm test -- -g Timer
 ```
