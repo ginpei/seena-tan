@@ -9,22 +9,19 @@ git clone git@github.com:ginpei/seena-tan.git
 cd seena-tan
 cp bin/env.example bin/env
 chmod u+x bin/env
-bin/env
-npm start
+source bin/env && npm start
 ```
 
-Do not forget to run `bin/env` before running script.
+Do not forget to run `source bin/env` before running script.
 
 # Test
 
 ```console
-bin/env
-npm test
+source bin/env && npm test
 ```
 
 ## Filtering
 
 ```console
-bin/env
-npm test -- -g Timer
+source bin/env && npm test -- -g Timer
 ```
