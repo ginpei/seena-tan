@@ -22,6 +22,8 @@ source bin/env && npm test
 
 ## Filtering
 
+Use `--` and `-g xxx`.
+
 ```console
 source bin/env && npm test -- -g Timer
 ```
