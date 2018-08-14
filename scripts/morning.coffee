@@ -5,9 +5,9 @@ CronJob = require('cron').CronJob
 moment = require('moment-timezone')
 _ = require('lodash')
 ForecastBot = require('./../scripts/forecast.coffee').ForecastBot
-Traffic = require('./../scripts/traffic.coffee').Traffic
+# Traffic = require('./../scripts/traffic.coffee').Traffic
 EventManager = require('./../scripts/event_manager.coffee').EventManager
-CurrencyRate = require('./../scripts/currency_rate.coffee').CurrencyRate
+# CurrencyRate = require('./../scripts/currency_rate.coffee').CurrencyRate
 
 class Morning
   @morning_messages: [
@@ -67,11 +67,11 @@ class Morning
       message = @build_forecast_message(forecast)
       robot.messageRoom @channel, message
 
-      @get_traffic (message)=>
-        robot.messageRoom @channel, message
+      # @get_traffic (message)=>
+      #   robot.messageRoom @channel, message
 
-      @get_currency_rate (message)=>
-        robot.messageRoom @channel, message
+      # @get_currency_rate (message)=>
+      #   robot.messageRoom @channel, message
 
   build_forecast_message: (forecast)->
     if forecast
