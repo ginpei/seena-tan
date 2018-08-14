@@ -6,7 +6,7 @@
   "description": "Super Great House Keeper",
   "dependencies": {
     "cron": "^1.1.0",
-    "forecast.io": "github:ginpei/forecast.io#instantGet",
+    "forecast.io": "github:ginpei/forecast.io#de66f96029a0b6f12d9c081ead03ee5fe77929c3",
     "hubot": "^3.1.0",
     "hubot-diagnostics": "1.0.0",
     "hubot-google-images": "^0.2.6",
