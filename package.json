@@ -30,12 +30,12 @@
   "scripts": {
     "logs": "heroku logs -a seena-tan",
     "start": "bin/hubot",
-    "test": "mocha --exit --compilers coffee:coffee-script/register"
+    "test": "mocha --exit --require coffeescript/register test/**/*.test.coffee"
   },
   "devDependencies": {
     "chai": "^3.5.0",
     "co": "^4.6.0",
-    "coffee-script": "^1.10.0",
+    "coffeescript": "^2.3.2",
     "hubot-test-helper": "^1.4.4",
     "mocha": "^6.0.1",
     "sinon": "^7.2.4"
