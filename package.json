@@ -17,7 +17,7 @@
     "underscore": "^1.8.3"
   },
   "engines": {
-    "node": "8.x"
+    "node": "10"
   },
   "scripts": {
     "logs": "heroku logs -a seena-tan",
