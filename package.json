@@ -22,7 +22,7 @@
   "scripts": {
     "logs": "heroku logs -a seena-tan",
     "start": "dotenv bin/hubot",
-    "test": "dotenv mocha --exit --require coffeescript/register test/**/*.test.coffee"
+    "test": "dotenv mocha -- --exit --require coffeescript/register test/**/*.test.coffee"
   },
   "devDependencies": {
     "chai": "^3.5.0",
