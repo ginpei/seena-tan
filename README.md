@@ -20,7 +20,7 @@ $ npm start
 # Test
 
 ```console
-npm test
+$ npm test
 ```
 
 ## Filtering
@@ -28,5 +28,5 @@ npm test
 Use `--` and `-g xxx`.
 
 ```console
-npm test -- -g Timer
+$ npm test -- -g Timer
 ```
