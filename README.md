@@ -1,5 +1,6 @@
 # seena-tan
 
+[![Build Status](https://travis-ci.org/ginpei/seena-tan.svg?branch=master)](https://travis-ci.org/ginpei/seena-tan)
 [![Greenkeeper badge](https://badges.greenkeeper.io/ginpei/seena-tan.svg)](https://greenkeeper.io/)
 
 # Set up for development
