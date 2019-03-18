@@ -1,23 +1,26 @@
 # seena-tan
 
+[![Build Status](https://travis-ci.org/ginpei/seena-tan.svg?branch=master)](https://travis-ci.org/ginpei/seena-tan)
 [![Greenkeeper badge](https://badges.greenkeeper.io/ginpei/seena-tan.svg)](https://greenkeeper.io/)
 
 # Set up for development
 
 ```console
-git clone git@github.com:ginpei/seena-tan.git
-cd seena-tan
-cp bin/env.example bin/env
-chmod u+x bin/env
-source bin/env && npm start
+$ git clone git@github.com:ginpei/seena-tan.git
+$ cd seena-tan
+$ cp .env.example .env
 ```
 
-Do not forget to run `source bin/env` before running script.
+Edit `.env` as you need then:
+
+```console
+$ npm start
+```
 
 # Test
 
 ```console
-source bin/env && npm test
+$ npm test
 ```
 
 ## Filtering
@@ -25,5 +28,5 @@ source bin/env && npm test
 Use `--` and `-g xxx`.
 
 ```console
-source bin/env && npm test -- -g Timer
+$ npm test -- -g Timer
 ```

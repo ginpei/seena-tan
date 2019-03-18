@@ -8,34 +8,27 @@
     "cron": "^1.1.0",
     "forecast.io": "github:ginpei/forecast.io#de66f96029a0b6f12d9c081ead03ee5fe77929c3",
     "hubot": "^3.2.0",
-    "hubot-diagnostics": "1.0.0",
-    "hubot-google-images": "^0.2.6",
-    "hubot-google-translate": "^0.2.0",
     "hubot-help": "^1.0.1",
     "hubot-heroku-keepalive": "^1.0.2",
-    "hubot-maps": "0.0.2",
-    "hubot-pugme": "^0.1.0",
     "hubot-redis-brain": "1.0.0",
-    "hubot-rules": "^0.1.1",
     "hubot-scripts": "^2.16.2",
-    "hubot-shipit": "^0.2.0",
-    "hubot-slack": "^4.5.4",
+    "hubot-slack": "^4.6.0",
     "moment-timezone": "^0.5.14",
-    "translink-alerts": "github:ginpei/translink-alerts#7d1f65e6d322fabeaa266ef8c5f15d8e1b284bf8",
     "underscore": "^1.8.3"
   },
   "engines": {
-    "node": "8.x"
+    "node": "10"
   },
   "scripts": {
     "logs": "heroku logs -a seena-tan",
-    "start": "bin/hubot",
-    "test": "mocha --exit --require coffeescript/register test/**/*.test.coffee"
+    "start": "dotenv bin/hubot",
+    "test": "dotenv mocha -- --exit --require coffeescript/register test/**/*.test.coffee"
   },
   "devDependencies": {
     "chai": "^3.5.0",
     "co": "^4.6.0",
     "coffeescript": "^2.3.2",
+    "dotenv-cli": "^2.0.0",
     "hubot-test-helper": "^1.4.4",
     "mocha": "^6.0.2",
     "sinon": "^7.2.4"
