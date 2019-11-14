@@ -99,7 +99,7 @@ module.exports = (robot) ->
   laundry_manager.start(robot)
 
   drier_manager = new Timer(
-    duration: { hours: 1, minutes: 11 }
+    duration: { minutes: 60 }
     title: '乾燥'
   )
   drier_manager.start(robot)
