@@ -31,6 +31,6 @@
     "dotenv-cli": "^3.0.0",
     "hubot-test-helper": "^1.4.4",
     "mocha": "^6.0.2",
-    "sinon": "^7.3.1"
+    "sinon": "^8.0.0"
   }
 }
